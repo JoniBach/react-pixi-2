@@ -1,23 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { useReducer, useRef } from "react";
+import { Container, Sprite, Stage, useTick } from "@inlet/react-pixi";
+import BasicExample from "./examples/BasicExample";
+import Quiz from "./examples/Quiz";
+import MovingBunny from "./examples/MovingBunny";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {/* <BasicExample /> */}
+      <MovingBunny />
+      {/* <Quiz /> */}
     </div>
   );
 }
