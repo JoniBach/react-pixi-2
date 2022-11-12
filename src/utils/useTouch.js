@@ -23,17 +23,11 @@ export function useTouch({ size }) {
     x: currentPosition.x - startPosition.x,
   };
 
-  //   const x = startPosition.x +  xBoundry()
-  //   const y = startPosition.y + yBoundry()
-
   const dx = currentPosition.x - startPosition.x;
   const dy = currentPosition.y - startPosition.y;
+
   const rad = Math.atan2(dy, dx);
-
-  //   rad defaultls to 0 and 0 is hard right
-
   const xPos = size * Math.cos(rad);
-
   const yPos = size * Math.sin(rad);
 
   const xBoundry = startPosition.x + xPos;
@@ -69,8 +63,6 @@ export function useTouch({ size }) {
   const xPercentage = positionDifference.x === 0 ? 0 : (xPos / size) * 100;
   const yPercentage = positionDifference.y === 0 ? 0 : (yPos / size) * 100;
 
-
-  //   TODO: fix this its tuck on right
   const percentage = active
     ? { x: xPercentage, y: yPercentage }
     : { x: 0, y: 0 };
@@ -124,6 +116,7 @@ export function useTouch({ size }) {
       window.addEventListener("touchend", touchHandler, false);
     };
   }, []);
+  
   return {
     position: { x, y },
     currentPosition,
