@@ -6,14 +6,20 @@ import BasicExample from "./examples/BasicExample";
 import Quiz from "./examples/Quiz";
 import MovingBunny from "./examples/MovingBunny";
 import { useController } from "./contexts/ControllerContext";
+import { ForestAdventure } from "./examples/ForestAdventure";
+import MapChaser from "./examples/MapChaser";
 
 function App() {
-
   return (
     <div>
       {/* <BasicExample /> */}
-      <MovingBunny  />
+      {/* <MovingBunny  /> */}
       {/* <Quiz /> */}
+
+      <div className="game-container">
+        {/* <ForestAdventure /> */}
+        <MapChaser dimensions={{x: 1000, y:1000}} scale={0.5} />
+      </div>
     </div>
   );
 }
