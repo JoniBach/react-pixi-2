@@ -17,16 +17,12 @@ export const PerpetualCharacter = ({
   scale = 1,
   toggle,
 }) => {
-  const pace = 1;
 
-  const { x, y } = useMovement({ pace });
-  const key = useLastKeyDown(["w", "a", "s", "d"]);
-  const up = useKeyPress("w");
-  const down = useKeyPress("s");
-  const left = useKeyPress("a");
-  const right = useKeyPress("d");
+  const pace = 2
+  const buffer = 5;
 
-  const [direction, setDirection] = useState('')
+
+  const [direction, setDirection] = useState("");
 
   const [pos, setPos] = useState({ x: start.x, y: start.y });
 
@@ -40,90 +36,131 @@ export const PerpetualCharacter = ({
 
     const base = false;
 
-    if (up) {
       if (
         ab.x + ab.width > bb.x &&
         ab.x < bb.x + bb.width &&
-        ab.y + 1 + ab.height > bb.y &&
+        ab.y + buffer + ab.height > bb.y &&
         ab.y < bb.y + bb.height
       ) {
         return "up";
       }
-    }
-    if (down) {
       if (
         ab.x + ab.width > bb.x &&
         ab.x < bb.x + bb.width &&
         ab.y + ab.height > bb.y &&
-        ab.y - 1 < bb.y + bb.height
+        ab.y - buffer < bb.y + bb.height
       ) {
         return "down";
       }
-    }
-    if (left) {
       if (
-        ab.x + 1 + ab.width > bb.x &&
+        ab.x + buffer + ab.width > bb.x &&
         ab.x < bb.x + bb.width &&
         ab.y + ab.height > bb.y &&
         ab.y < bb.y + bb.height
       ) {
         return "left";
       }
-    }
-    if (right) {
       if (
         ab.x + ab.width > bb.x &&
-        ab.x - 1 < bb.x + bb.width &&
+        ab.x - buffer < bb.x + bb.width &&
         ab.y + ab.height > bb.y &&
         ab.y < bb.y + bb.height
       ) {
         return "right";
       }
-    }
     return base;
   };
 
+  const demo = obstacle.map((e) => checkNextMovement(e, character));
+  const upBlocked = demo.includes("up");
+  const downBlocked = demo.includes("down");
+  const leftBlocked = demo.includes("left");
+  const rightBlocked = demo.includes("right");
+
   useTick((delta) => {
     if (contolledBy === "player") {
-      const demo = obstacle.map((e) => checkNextMovement(e, character));
-      const upBlocked = demo.includes("up");
-      const downBlocked = demo.includes("down");
-      const leftBlocked = demo.includes("left");
-      const rightBlocked = demo.includes("right");
-
-      if (up && !upBlocked) {
-        setDirection('up')
+      if (direction === 'up' && !upBlocked) {
         setPos({
           x: pos?.x,
-          y: pos?.y - 1,
+          y: pos?.y - pace,
         });
       }
 
-      if (down && !downBlocked) {
-        setDirection('down')
+      if (direction === 'down' && !downBlocked) {
         setPos({
           x: pos?.x,
-          y: pos?.y + 1,
+          y: pos?.y + pace,
         });
       }
 
-      if (left && !leftBlocked) {
-        setDirection('left')
+      if (direction === 'left' && !leftBlocked) {
         setPos({
-          x: pos?.x - 1,
+          x: pos?.x - pace,
           y: pos?.y,
         });
       }
 
-      if (right && !rightBlocked) {
-        setDirection('right')
+      if (direction === 'right' && !rightBlocked) {
         setPos({
-          x: pos?.x + 1,
+          x: pos?.x + pace,
           y: pos?.y,
         });
       }
     }
   });
+
+  const changeDir = ({ key, repeat }) => {
+    switch (key) {
+      case "w":
+        if (!upBlocked) {
+          setDirection("up");
+        }
+        break;
+      case "s":
+        if (!downBlocked) {
+          setDirection("down");
+        }
+        break;
+      case "d":
+        if (!rightBlocked) {
+          setDirection("right");
+        }
+        break;
+      case "a":
+        if (!leftBlocked) {
+          setDirection("left");
+        }
+        break;
+      default:
+
+        break;
+    }
+  };
+
+  const handleStop = () => {
+    if (direction === 'up' && upBlocked) {
+      setDirection("stop");
+    }
+    if (direction === 'down' && downBlocked) {
+      setDirection("stop");
+    }
+
+    if (direction === 'left' && leftBlocked) {
+      setDirection("stop");
+    }
+    if (direction === 'right' && rightBlocked) {
+      setDirection("stop");
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("keydown", changeDir);
+    handleStop()
+    // Remove event listeners on cleanup
+    return () => {
+      window.removeEventListener("keydown", changeDir);
+    };
+  }, [pos]);
 
   return (
     <>
