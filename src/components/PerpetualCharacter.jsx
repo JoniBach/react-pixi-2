@@ -21,6 +21,8 @@ export const PerpetualCharacter = ({
   const pace = 2
   const buffer = 5;
 
+  const up = useKeyPress('w')
+
 
   const [direction, setDirection] = useState("");
 
