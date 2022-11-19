@@ -5,7 +5,7 @@ import Character from "../components/Character";
 import Environment from "../components/Environment";
 import PerpetualCharacter from "../components/PerpetualCharacter";
 
-const buildingBox = 0x333333
+const buildingBox = 0x333333;
 const obstacles = [
   {
     color: buildingBox,
@@ -31,7 +31,7 @@ const obstacles = [
     color: buildingBox,
     dimensions: [850, 350, 100, 450],
   },
-// 
+  //
   {
     color: buildingBox,
     dimensions: [200, 200, 200, 100],
@@ -40,7 +40,7 @@ const obstacles = [
     color: buildingBox,
     dimensions: [200, 200, 100, 200],
   },
-// 
+  //
   {
     color: buildingBox,
     dimensions: [50, 850, 900, 100],
@@ -49,7 +49,7 @@ const obstacles = [
     color: buildingBox,
     dimensions: [50, 300, 100, 600],
   },
-// 
+  //
   {
     color: buildingBox,
     dimensions: [200, 700, 300, 100],
@@ -58,7 +58,7 @@ const obstacles = [
     color: buildingBox,
     dimensions: [200, 450, 100, 300],
   },
-  // 
+  //
   {
     color: buildingBox,
     dimensions: [550, 700, 250, 100],
@@ -72,7 +72,6 @@ const obstacles = [
     color: 0x111111,
     dimensions: [350, 350, 300, 300],
   },
-
 ];
 
 const options = {
@@ -88,7 +87,6 @@ export function MapChaser({ dimensions, scale }) {
   return (
     <div>
       <Stage width={mapSize.x} height={mapSize.y} options={options}>
-      
         <PerpetualCharacter
           start={{ x: 200, y: 152 }}
           contolledBy="player"
@@ -96,7 +94,7 @@ export function MapChaser({ dimensions, scale }) {
           scale={scale}
           obstacles={obstacles}
         />
-   <Character
+        <Character
           image="park_texture.png"
           start={{ x: 0, y: 0 }}
           scale={scale}
