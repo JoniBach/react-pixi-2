@@ -1,7 +1,7 @@
 import { Graphics } from "@inlet/react-pixi";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
-const Thing = ({ scale, color, boundries, cellSize, gridSize }) => {
+const Thing = ({ onRender, scale, color, boundries, cellSize, gridSize }) => {
   const ref = useRef();
 
   const rect = useCallback((g) => {
@@ -16,12 +16,18 @@ const Thing = ({ scale, color, boundries, cellSize, gridSize }) => {
     g.endFill();
   }, []);
 
+  useEffect(() => {
+    onRender(ref?.current);
+  }, [ref]);
+  
+
   return <Graphics ref={ref} draw={rect} />;
 };
 
-export const MapGrid = ({ scale = 1, color, invert, layout, size, gridItems }) => {
+export const MapGrid = ({ onRender, scale = 1, color, invert, layout, size, gridItems }) => {
   const cellSize = size / gridItems; // 100
 
+  const obs = []
   const templateBase = [...Array(gridItems).keys()];
 
   const handleStuff = (e) => {
@@ -38,16 +44,21 @@ export const MapGrid = ({ scale = 1, color, invert, layout, size, gridItems }) =
     templateBase.map((ea, ia) => handleStuff([i, ia]))
   );
 
+  useEffect(() => {
+    onRender(obs)
+  }, [])
+  
+
   return (
     <>
       {invert &&
         template.map((e, i) =>
-          e.map((ea, ia) => ea && <Thing scale={scale} color={color} boundries={ea} cellSize={cellSize} />)
+          e.map((ea, ia) => ea && <Thing onRender={(e) => obs.push(e)} scale={scale} color={color} boundries={ea} cellSize={cellSize} />)
         )}
 
       {!invert &&
         layout.map(( boundries, i) => (
-          <Thing scale={scale} color={color} boundries={boundries} cellSize={cellSize} />
+          <Thing onRender={(e) => obs.push(e)} scale={scale} color={color} boundries={boundries} cellSize={cellSize} />
         ))}
     </>
   );

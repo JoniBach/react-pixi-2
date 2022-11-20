@@ -78,27 +78,24 @@ const options = {
   backgroundColor: 0x353734,
 };
 
-export function MapChaser({ dimensions, scale }) {
+export function MapChaser({ size, dimensions, scale }) {
   const mapSize = {
-    x: dimensions.x * scale,
-    y: dimensions.x * scale,
+    x: size,
+    y: size,
   };
 
   return (
     <div>
       <Stage width={mapSize.x} height={mapSize.y} options={options}>
         <PerpetualCharacter
-          start={{ x: 200, y: 152 }}
-          contolledBy="player"
           image="player.png"
-          scale={scale}
-          obstacles={obstacles}
+          size={size}
         />
-        <Character
+        {/* <Character
           image="park_texture.png"
           start={{ x: 0, y: 0 }}
           scale={scale}
-        />
+        /> */}
       </Stage>
     </div>
   );

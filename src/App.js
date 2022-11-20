@@ -19,7 +19,7 @@ function App() {
 
       <div className="game-container">
         {/* <ForestAdventure /> */}
-        <MapChaser dimensions={{x: 1000, y:1000}} scale={0.5} />
+        <MapChaser size={1000}/>
         {/* <GridGame scale={0.2} size={1000} /> */}
       </div>
     </div>
