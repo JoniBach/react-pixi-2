@@ -11,6 +11,9 @@ import MapChaser from "./examples/MapChaser";
 import GridGame from "./examples/GridGame";
 
 function App() {
+
+  const baseSize = window.innerHeight > window.innerWidth ? window.innerWidth : window.innerHeight
+  const size = Math.floor(baseSize / 100) * 100
   return (
     <div>
       {/* <BasicExample /> */}
@@ -19,7 +22,7 @@ function App() {
 
       <div className="game-container">
         {/* <ForestAdventure /> */}
-        <MapChaser size={1000}/>
+        <MapChaser size={size }/>
         {/* <GridGame scale={0.2} size={1000} /> */}
       </div>
     </div>

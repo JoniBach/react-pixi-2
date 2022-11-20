@@ -25,7 +25,7 @@ const Thing = ({ onRender, scale, color, boundries, cellSize, gridSize }) => {
 };
 
 export const MapGrid = ({ onRender, scale = 1, color, invert, layout, size, gridItems }) => {
-  const cellSize = size / gridItems; // 100
+  const cellSize = size * 2 / gridItems; // 100
 
   const obs = []
   const templateBase = [...Array(gridItems).keys()];

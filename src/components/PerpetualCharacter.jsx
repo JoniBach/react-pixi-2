@@ -23,10 +23,8 @@ export const PerpetualCharacter = ({
 }) => {
   const pace = 1;
 
-  const cellQuantity = 40
-  const cellSize = size / cellQuantity
-
-  
+  const cellQuantity = 40;
+  const cellSize = (size * 2) / cellQuantity;
 
   const { characterRef, pos, setObstacle, setSpawn } = usePerpetualMovement({
     pace,
@@ -35,7 +33,7 @@ export const PerpetualCharacter = ({
     <>
       <MapGrid
         type="spawn"
-        color={0xdddddd}
+        color={0x222222}
         gridItems={cellQuantity}
         scale={1}
         size={size}
@@ -53,7 +51,7 @@ export const PerpetualCharacter = ({
       <MapGrid
         type="obstacle"
         invert
-        color={0xcccccc}
+        color={0x333333}
         gridItems={cellQuantity}
         scale={1}
         size={size}

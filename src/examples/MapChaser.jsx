@@ -91,11 +91,11 @@ export function MapChaser({ size, dimensions, scale }) {
           image="player.png"
           size={size}
         />
-        {/* <Character
+        <Sprite
           image="park_texture.png"
-          start={{ x: 0, y: 0 }}
-          scale={scale}
-        /> */}
+         width={size}
+         height={size}
+        />
       </Stage>
     </div>
   );
