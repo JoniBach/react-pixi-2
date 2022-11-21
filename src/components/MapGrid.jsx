@@ -21,15 +21,14 @@ const Thing = ({ onRender, scale, color, boundries, cellSize, gridSize }) => {
   }, [ref]);
   
 
-  return <Graphics ref={ref} draw={rect} />;
+  return <Graphics ref={ref} draw={rect} id={`${boundries[0]}-${boundries[1]}`}/>;
 };
 
 export const MapGrid = ({ onRender, scale = 1, color, invert, layout, size, gridItems }) => {
+  
   const cellSize = size * 2 / gridItems; // 100
-
   const obs = []
   const templateBase = [...Array(gridItems).keys()];
-
   const handleStuff = (e) => {
     if (
       layout.filter(

@@ -4,7 +4,7 @@ import { useKeyPress } from "./useKeyPress";
 
 
 
-export const usePerpetualMovement = ({pace = 1, start, size, buffer = 1}) => {
+export const usePerpetualMovement = ({pace = 1, scale, size, buffer = 1}) => {
   const up = useKeyPress("w");
   const down = useKeyPress("s");
   const left = useKeyPress("a");
@@ -146,11 +146,19 @@ export const usePerpetualMovement = ({pace = 1, start, size, buffer = 1}) => {
     const startPos = {x:  e[0].position.x, y:  e[0].position.y}
     setPos(startPos)
   }
+
+  const setSpawnCell = (e) => {
+    const startPos = {
+      x:  e[0] * size ,
+      y:  e[1] * size }
+    console.log(scale)
+    setPos(startPos)
+  }
   
   useEffect(() => {
     changeDir();
     handleStop();
   }, [pos, up, down, left, right]);
 
-  return ({characterRef, pos, setObstacle, setSpawn})
+  return ({characterRef, pos, setObstacle, setSpawn, setSpawnCell})
 };
