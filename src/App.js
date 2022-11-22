@@ -9,6 +9,7 @@ import { useController } from "./contexts/ControllerContext";
 import { ForestAdventure } from "./examples/ForestAdventure";
 import MapChaser from "./examples/MapChaser";
 import GridGame from "./examples/GridGame";
+import GameCreator from "./examples/GameCreator";
 
 function App() {
 
@@ -22,7 +23,8 @@ function App() {
 
       <div className="game-container">
         {/* <ForestAdventure /> */}
-        <MapChaser size={size }/>
+        {/* <MapChaser size={size }/> */}
+        <GameCreator size={size }/>
         {/* <GridGame scale={0.2} size={1000} /> */}
       </div>
     </div>

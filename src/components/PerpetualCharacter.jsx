@@ -12,18 +12,14 @@ import Environment from "./Environment";
 import { MapGrid } from "./MapGrid";
 
 export const PerpetualCharacter = ({
-  obstacles,
   image,
-  // start = 0,
-  contolledBy,
-  scale = 1,
-  toggle,
   size,
-  dimensions,
+  obstacleCells,
+  spawnCell,
+  invert,
+  cellQuantity
 }) => {
   const pace = 1;
-
-  const cellQuantity = 40;
   const cellSize = (size * 2) / cellQuantity;
 
   const { characterRef, pos, setObstacle, setSpawn } = usePerpetualMovement({
@@ -31,15 +27,17 @@ export const PerpetualCharacter = ({
   });
   return (
     <>
-      <MapGrid
-        type="spawn"
-        color={0x222222}
-        gridItems={cellQuantity}
-        scale={1}
-        size={size}
-        layout={[[0, 0]]}
-        onRender={(e) => setSpawn(e)}
-      />
+      {spawnCell && (
+        <MapGrid
+          type="spawn"
+          color={0x222222}
+          gridItems={cellQuantity}
+          scale={1}
+          size={size}
+          layout={[spawnCell]}
+          onRender={(e) => setSpawn(e)}
+        />
+      )}
       <Sprite
         image={image}
         width={cellSize}
@@ -48,22 +46,18 @@ export const PerpetualCharacter = ({
         {...pos}
       />
 
-      <MapGrid
-        type="obstacle"
-        invert
-        color={0x333333}
-        gridItems={cellQuantity}
-        scale={1}
-        size={size}
-        layout={queenSquareMap}
-        onRender={(e) => setObstacle(e)}
-      />
-
-      {/* <Environment
-        obstacles={obstacles}
-        scale={scale}
-        setObstacles={(e) => setObstacle(e)}
-      /> */}
+      {obstacleCells && (
+        <MapGrid
+          type="obstacle"
+          invert={invert}
+          color={0x333333}
+          gridItems={cellQuantity}
+          scale={1}
+          size={size}
+          layout={obstacleCells}
+          onRender={(e) => setObstacle(e)}
+        />
+      )}
     </>
   );
 };
