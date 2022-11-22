@@ -1,6 +1,5 @@
 import { Sprite, useTick } from "@inlet/react-pixi";
 import { useEffect, useRef, useState } from "react";
-import { queenSquareMap } from "../mockData/queenSquareMap";
 import { useKeyPress } from "../utils/useKeyPress";
 import { useMovement } from "../utils/useMovement";
 import {
@@ -14,16 +13,17 @@ import { MapGrid } from "./MapGrid";
 export const PerpetualCharacter = ({
   obstacles,
   image,
+  layout,
   // start = 0,
   contolledBy,
   scale = 1,
   toggle,
   size,
   dimensions,
+  cellQuantity
 }) => {
-  const pace = 1;
+  const pace = 2;
 
-  const cellQuantity = 40;
   const cellSize = (size * 2) / cellQuantity;
 
   const { characterRef, pos, setObstacle, setSpawn } = usePerpetualMovement({
@@ -33,7 +33,7 @@ export const PerpetualCharacter = ({
     <>
       <MapGrid
         type="spawn"
-        color={0x222222}
+        color={0x555555}
         gridItems={cellQuantity}
         scale={1}
         size={size}
@@ -50,20 +50,15 @@ export const PerpetualCharacter = ({
 
       <MapGrid
         type="obstacle"
-        invert
-        color={0x333333}
+        color={0x666666}
         gridItems={cellQuantity}
         scale={1}
         size={size}
-        layout={queenSquareMap}
+        layout={layout}
         onRender={(e) => setObstacle(e)}
       />
 
-      {/* <Environment
-        obstacles={obstacles}
-        scale={scale}
-        setObstacles={(e) => setObstacle(e)}
-      /> */}
+      
     </>
   );
 };

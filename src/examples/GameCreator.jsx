@@ -13,24 +13,37 @@ const options = {
   backgroundColor: 0x353734,
 };
 
+const getCell = (a, b) => {
+  var ab = a.getBounds();
+  var bb = { x: b.x, y: b.y, width: 1, height: 1 };
+  if (
+    ab.x + ab.width > bb.x &&
+    ab.x < bb.x + bb.width &&
+    ab.y + ab.height > bb.y &&
+    ab.y < bb.y + bb.height
+  ) {
+    return true;
+  }
+  return false;
+};
+
+const handleSave = (e, newCells) => {
+  e.preventDefault();
+  exportToJson({ obstacleData: newCells });
+};
+
+const handleImport = async (e, setNewCells) => {
+  const file = e.target.files[0];
+  const json = await file.text();
+  const data = JSON.parse(json);
+  return data.obstacleData;
+};
+
 export function GameCreator({ size }) {
   const [obstacles, setObstacles] = useState([]);
   const [newCells, setNewCells] = useState([]);
   const [newCellObjs, setNewCellObjs] = useState([]);
-
-  const getCell = (a, b) => {
-    var ab = a.getBounds();
-    var bb = { x: b.x, y: b.y, width: 1, height: 1 };
-    if (
-      ab.x + ab.width > bb.x &&
-      ab.x < bb.x + bb.width &&
-      ab.y + ab.height > bb.y &&
-      ab.y < bb.y + bb.height
-    ) {
-      return true;
-    }
-    return false;
-  };
+  const [editMode, setEditMode] = useState(false);
 
   const handleRemove = (cell) => {
     const removed = newCells.filter(
@@ -43,6 +56,8 @@ export function GameCreator({ size }) {
   const handleAdd = (cell) => {
     setNewCells([...newCells, cell]);
   };
+
+  console.log("test");
 
   const handleCellClick = (click) => {
     const x = obstacles?.filter((ob) => getCell(ob, click));
@@ -64,62 +79,56 @@ export function GameCreator({ size }) {
     }
   };
 
-  const handleSave = (e) => {
-    e.preventDefault();
-    exportToJson({ obstacleData: newCells });
-  };
-
-  const handleImport = async (e) => {
-    // JSON.parse(e)
-    const file = e.target.files[0]
-
-    const json = await file.text()
-    
-    const data = JSON.parse(json)
-
-    setNewCells(data.obstacleData)
-    
-
-    // console.log(e.target.files[0].text().then(e => console.log(e)));
-  };
-
   useEffect(() => {
     window.addEventListener("mousedown", handleCellClick);
-
     return () => {
       window.removeEventListener("mousedown", handleCellClick);
     };
   }, [obstacles, newCells]);
-
   return (
     <>
-      <Stage width={size} height={size} options={options}>
-        <MapGrid
-          type="obstacle"
-          invert
-          color={0x444444}
-          gridItems={20}
-          scale={0.9}
-          size={size}
-          layout={[]}
-          onRender={(e) => setObstacles(e)}
-        />
-        <MapGrid
-          type="obstacle"
-          color={0xffff00}
-          gridItems={20}
-          scale={0.9}
-          size={size}
-          layout={newCells}
-          onRender={(e) => setNewCellObjs(e)}
-        />
-      </Stage>
-      <button onClick={(e) => handleSave(e)}>export</button>
+      {editMode && (
+        <Stage width={size} height={size} options={options}>
+          <MapGrid
+            type="obstacle"
+            invert
+            color={0x444444}
+            gridItems={20}
+            scale={0.9}
+            size={size}
+            layout={[]}
+            onRender={(e) => setObstacles(e)}
+          />
+          <MapGrid
+            type="obstacle"
+            color={0xffff00}
+            gridItems={20}
+            scale={0.9}
+            size={size}
+            layout={newCells}
+            onRender={(e) => setNewCellObjs(e)}
+          />
+        </Stage>
+      )}
+      {!editMode && newCells.length && (
+        <Stage width={size} height={size} options={options}>
+          <PerpetualCharacter
+            image="player.png"
+            size={size}
+            layout={newCells}
+            cellQuantity={20}
+          />
+        </Stage>
+      )}
+
+      <button onClick={(e) => handleSave(e, newCells)}>export</button>
       <input
         type="file"
-        onChange={(e) => handleImport(e)}
+        onChange={(e) => handleImport(e).then((res) => setNewCells(res))}
       />
-   
+      <button onClick={(e) => setEditMode(!editMode)}>
+        {!editMode ? "edit" : "live"}
+      </button>
     </>
   );
 }
