@@ -26,10 +26,8 @@ function App() {
 
       <div className="game-container">
         {/* <ForestAdventure /> */}
-
-        <GameCreator size={size }/>
-    
         {/* <MapChaser size={size }/> */}
+        <GameCreator size={size }/>
         {/* <GridGame scale={0.2} size={1000} /> */}
       </div>
     </div>

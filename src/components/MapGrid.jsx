@@ -21,7 +21,7 @@ const Thing = ({ onRender, scale, color, boundries, cellSize, gridSize }) => {
   }, [ref]);
   
 
-  return <Graphics ref={ref} draw={rect} id={`${boundries[0]}-${boundries[1]}`}/>;
+  return <Graphics ref={ref} draw={rect} id={`${boundries[0]} - ${boundries[1]}`}/>;
 };
 
 export const MapGrid = ({ onRender, scale = 1, color, invert, layout, size, gridItems }) => {

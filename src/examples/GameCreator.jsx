@@ -43,7 +43,7 @@ export function GameCreator({ size }) {
   const [obstacles, setObstacles] = useState([]);
   const [newCells, setNewCells] = useState([]);
   const [newCellObjs, setNewCellObjs] = useState([]);
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState(true);
 
   const handleRemove = (cell) => {
     const removed = newCells.filter(
@@ -57,11 +57,8 @@ export function GameCreator({ size }) {
     setNewCells([...newCells, cell]);
   };
 
-  console.log("test");
-
   const handleCellClick = (click) => {
     const x = obstacles?.filter((ob) => getCell(ob, click));
-
     if (x.length) {
       const cellString = x[0]?.id;
       const cellArr = cellString.split("-");
@@ -79,30 +76,44 @@ export function GameCreator({ size }) {
     }
   };
 
+  const [cellQuantity, setCellQuantity] = useState(40);
+  const [overlay, setoverlay] = useState(null);
+
+  const handleOverlay = (e) => {
+    setoverlay(e.target.files[0]);
+  };
+
   useEffect(() => {
     window.addEventListener("mousedown", handleCellClick);
+    // window.addEventListener("mousemove", handleCellClick);
+    
     return () => {
       window.removeEventListener("mousedown", handleCellClick);
+      // window.removeEventListener("mousemove", handleCellClick);
     };
   }, [obstacles, newCells]);
   return (
     <>
+    
       {editMode && (
         <Stage width={size} height={size} options={options}>
           <MapGrid
             type="obstacle"
             invert
             color={0x444444}
-            gridItems={20}
+            gridItems={cellQuantity}
             scale={0.9}
             size={size}
             layout={[]}
             onRender={(e) => setObstacles(e)}
           />
+           {overlay && (
+            <Sprite alpha={0.5} image={overlay.name} width={size} height={size} />
+          )}
           <MapGrid
             type="obstacle"
             color={0xffff00}
-            gridItems={20}
+            gridItems={cellQuantity}
             scale={0.9}
             size={size}
             layout={newCells}
@@ -110,25 +121,39 @@ export function GameCreator({ size }) {
           />
         </Stage>
       )}
+  
       {!editMode && newCells.length && (
         <Stage width={size} height={size} options={options}>
           <PerpetualCharacter
             image="player.png"
             size={size}
-            layout={newCells}
-            cellQuantity={20}
+            obstacleCells={newCells}
+            spawnCell={[0, 0]}
+            cellQuantity={cellQuantity}
           />
+           {overlay && (
+            <Sprite alpha={1} image={overlay.name} width={size} height={size} />
+          )}
         </Stage>
       )}
 
-      <button onClick={(e) => handleSave(e, newCells)}>export</button>
-      <input
-        type="file"
-        onChange={(e) => handleImport(e).then((res) => setNewCells(res))}
-      />
-      <button onClick={(e) => setEditMode(!editMode)}>
-        {!editMode ? "edit" : "live"}
-      </button>
+      <div>
+        <button onClick={(e) => setEditMode(!editMode)}>
+          {!editMode ? "edit" : "live"}
+        </button>
+        <button onClick={(e) => handleSave(e, newCells)}>export</button>
+        <label>
+          Open
+          <input
+            type="file"
+            onChange={(e) => handleImport(e).then((res) => setNewCells(res))}
+          />
+        </label>
+        <label>
+          overlay
+          <input type="file" onChange={(e) => handleOverlay(e)} />
+        </label>
+      </div>
     </>
   );
 }
