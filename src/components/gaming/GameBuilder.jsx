@@ -1,18 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Container, Sprite, Stage } from "@inlet/react-pixi";
-import { JoyStick } from "../components/JoyStick";
-import Character from "../components/Character";
-import Environment from "../components/Environment";
-import PerpetualCharacter from "../components/PerpetualCharacter";
-import { MapGrid } from "../components/MapGrid";
-import { useCallback, useEffect, useState } from "react";
-import { usePerpetualMovement } from "../utils/usePerpetualMovement";
-import { exportToJson } from "../utils/exportToJson";
-import GameBuilder from "../components/gaming/GameBuilder";
-import GamePlayer from "../components/gaming/GamePlayer";
-import GameSetup from "../components/gaming/GameSetup";
-import { Modal } from "../components/interface/Modal";
-import { Nav } from "../components/interface/Nav";
+import { Sprite, Stage } from "@inlet/react-pixi";
+import { useEffect, useState } from "react";
+import { MapGrid } from "../MapGrid";
 
 const options = {
   backgroundColor: 0x353734,
@@ -32,23 +21,10 @@ const getCell = (a, b) => {
   return false;
 };
 
-const handleSave = (e, newCells) => {
-  e.preventDefault();
-  exportToJson({ obstacleData: newCells });
-};
-
-const handleImport = async (e, setNewCells) => {
-  const file = e.target.files[0];
-  const json = await file.text();
-  const data = JSON.parse(json);
-  return data.obstacleData;
-};
-
-export function GameCreator({ size }) {
+export function GameBuilder({ size }) {
   const [obstacles, setObstacles] = useState([]);
   const [newCells, setNewCells] = useState([]);
   const [newCellObjs, setNewCellObjs] = useState([]);
-  const [editMode, setEditMode] = useState(true);
 
   const handleRemove = (cell) => {
     const removed = newCells.filter(
@@ -84,10 +60,6 @@ export function GameCreator({ size }) {
   const [cellQuantity, setCellQuantity] = useState(40);
   const [overlay, setoverlay] = useState(null);
 
-  const handleOverlay = (e) => {
-    setoverlay(e.target.files[0]);
-  };
-
   useEffect(() => {
     window.addEventListener("mousedown", handleCellClick);
     // window.addEventListener("mousemove", handleCellClick);
@@ -98,12 +70,31 @@ export function GameCreator({ size }) {
     };
   }, [obstacles, newCells]);
   return (
-    <>
-      {/* <GameBuilder size={size}/> */}
-      {/* <GamePlayer size={size}/> */}
-      <GameSetup size={size} />
-    </>
+    <Stage width={size} height={size} options={options}>
+      <MapGrid
+        type="obstacle"
+        invert
+        color={0x444444}
+        gridItems={cellQuantity}
+        scale={0.9}
+        size={size}
+        layout={[]}
+        onRender={(e) => setObstacles(e)}
+      />
+      {overlay && (
+        <Sprite alpha={0.5} image={overlay.name} width={size} height={size} />
+      )}
+      <MapGrid
+        type="obstacle"
+        color={0xffff00}
+        gridItems={cellQuantity}
+        scale={0.9}
+        size={size}
+        layout={newCells}
+        onRender={(e) => setNewCellObjs(e)}
+      />
+    </Stage>
   );
 }
 
-export default GameCreator;
+export default GameBuilder;

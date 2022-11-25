@@ -24,6 +24,7 @@ export const PerpetualCharacter = ({
   const { characterRef, pos, setObstacle, setSpawn } = usePerpetualMovement({
     pace,
   });
+  
   return (
     <>
       {spawnCell && (

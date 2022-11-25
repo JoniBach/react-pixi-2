@@ -12,6 +12,8 @@ import GridGame from "./examples/GridGame";
 import GameCreator from "./examples/GameCreator";
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 import { Styles } from "./examples/Styles";
+import GameCreatorOld from "./examples/GameCreatorOld";
+import { Nav } from "./components/interface/Nav";
 
 function App() {
   const baseSize =
@@ -26,6 +28,10 @@ function App() {
       element: <GameCreator size={size} />,
     },
     {
+      path: "/creator-old",
+      element: <GameCreatorOld size={size} />,
+    },
+    {
       path: "/map-chase",
       element: <MapChaser size={size} />,
     },
@@ -37,6 +43,8 @@ function App() {
 
   return (
     <div className="game-container">
+    <Nav />
+
       <RouterProvider router={router} />
     </div>
   );

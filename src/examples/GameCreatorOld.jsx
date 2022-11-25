@@ -8,10 +8,6 @@ import { MapGrid } from "../components/MapGrid";
 import { useCallback, useEffect, useState } from "react";
 import { usePerpetualMovement } from "../utils/usePerpetualMovement";
 import { exportToJson } from "../utils/exportToJson";
-import GameBuilder from "../components/gaming/GameBuilder";
-import GamePlayer from "../components/gaming/GamePlayer";
-import GameSetup from "../components/gaming/GameSetup";
-import { Modal } from "../components/interface/Modal";
 import { Nav } from "../components/interface/Nav";
 
 const options = {
@@ -44,7 +40,7 @@ const handleImport = async (e, setNewCells) => {
   return data.obstacleData;
 };
 
-export function GameCreator({ size }) {
+export function GameCreatorOld({ size }) {
   const [obstacles, setObstacles] = useState([]);
   const [newCells, setNewCells] = useState([]);
   const [newCellObjs, setNewCellObjs] = useState([]);
@@ -91,7 +87,7 @@ export function GameCreator({ size }) {
   useEffect(() => {
     window.addEventListener("mousedown", handleCellClick);
     // window.addEventListener("mousemove", handleCellClick);
-
+    
     return () => {
       window.removeEventListener("mousedown", handleCellClick);
       // window.removeEventListener("mousemove", handleCellClick);
@@ -99,11 +95,68 @@ export function GameCreator({ size }) {
   }, [obstacles, newCells]);
   return (
     <>
-      {/* <GameBuilder size={size}/> */}
-      {/* <GamePlayer size={size}/> */}
-      <GameSetup size={size} />
+    
+      {editMode && (
+        <Stage width={size} height={size} options={options}>
+          <MapGrid
+            type="obstacle"
+            invert
+            color={0x444444}
+            gridItems={cellQuantity}
+            scale={0.9}
+            size={size}
+            layout={[]}
+            onRender={(e) => setObstacles(e)}
+          />
+           {overlay && (
+            <Sprite alpha={0.5} image={overlay.name} width={size} height={size} />
+          )}
+          <MapGrid
+            type="obstacle"
+            color={0xffff00}
+            gridItems={cellQuantity}
+            scale={0.9}
+            size={size}
+            layout={newCells}
+            onRender={(e) => setNewCellObjs(e)}
+          />
+        </Stage>
+      )}
+  
+      {!editMode && newCells.length && (
+        <Stage width={size} height={size} options={options}>
+          <PerpetualCharacter
+            image="player.png"
+            size={size}
+            obstacleCells={newCells}
+            spawnCell={[0, 0]}
+            cellQuantity={cellQuantity}
+          />
+           {overlay && (
+            <Sprite alpha={1} image={overlay.name} width={size} height={size} />
+          )}
+        </Stage>
+      )}
+
+      <div>
+        <button onClick={(e) => setEditMode(!editMode)}>
+          {!editMode ? "edit" : "live"}
+        </button>
+        <button onClick={(e) => handleSave(e, newCells)}>export</button>
+        <label>
+          Open
+          <input
+            type="file"
+            onChange={(e) => handleImport(e).then((res) => setNewCells(res))}
+          />
+        </label>
+        <label>
+          overlay
+          <input type="file" onChange={(e) => handleOverlay(e)} />
+        </label>
+      </div>
     </>
   );
 }
 
-export default GameCreator;
+export default GameCreatorOld;

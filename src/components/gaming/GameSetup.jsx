@@ -1,22 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Container, Sprite, Stage } from "@inlet/react-pixi";
-import { JoyStick } from "../components/JoyStick";
-import Character from "../components/Character";
-import Environment from "../components/Environment";
-import PerpetualCharacter from "../components/PerpetualCharacter";
-import { MapGrid } from "../components/MapGrid";
 import { useCallback, useEffect, useState } from "react";
-import { usePerpetualMovement } from "../utils/usePerpetualMovement";
-import { exportToJson } from "../utils/exportToJson";
-import GameBuilder from "../components/gaming/GameBuilder";
-import GamePlayer from "../components/gaming/GamePlayer";
-import GameSetup from "../components/gaming/GameSetup";
-import { Modal } from "../components/interface/Modal";
-import { Nav } from "../components/interface/Nav";
-
-const options = {
-  backgroundColor: 0x353734,
-};
+import { exportToJson } from "../../utils/exportToJson";
+import { Button } from "../interface/Button";
+import { File } from "../interface/File";
+import { Input } from "../interface/Input";
+import { Modal } from "../interface/Modal";
 
 const getCell = (a, b) => {
   var ab = a.getBounds();
@@ -38,13 +26,12 @@ const handleSave = (e, newCells) => {
 };
 
 const handleImport = async (e, setNewCells) => {
-  const file = e.target.files[0];
-  const json = await file.text();
+  const json = await e.text();
   const data = JSON.parse(json);
   return data.obstacleData;
 };
 
-export function GameCreator({ size }) {
+export function GameSetup({ size, active }) {
   const [obstacles, setObstacles] = useState([]);
   const [newCells, setNewCells] = useState([]);
   const [newCellObjs, setNewCellObjs] = useState([]);
@@ -84,8 +71,9 @@ export function GameCreator({ size }) {
   const [cellQuantity, setCellQuantity] = useState(40);
   const [overlay, setoverlay] = useState(null);
 
-  const handleOverlay = (e) => {
-    setoverlay(e.target.files[0]);
+  const handleOverlay = async (e) => {
+    setoverlay(e);
+    return e;
   };
 
   useEffect(() => {
@@ -98,12 +86,25 @@ export function GameCreator({ size }) {
     };
   }, [obstacles, newCells]);
   return (
-    <>
-      {/* <GameBuilder size={size}/> */}
-      {/* <GamePlayer size={size}/> */}
-      <GameSetup size={size} />
-    </>
+    <div>
+      <Modal title="styles">
+        {/* <Button onClick={(e) => setEditMode(!editMode)}>
+          {!editMode ? "edit" : "live"}
+        </Button> */}
+        <Button onClick={(e) => handleSave(e, newCells)}>export</Button>
+        <Input
+          label="cell quantity"
+          onChange={(e) => setCellQuantity(e.target.value)}
+        />
+        import data
+        <File
+          onChange={(e) => handleImport(e).then((res) => setNewCells(res))}
+        />
+        import image overlay
+        <File onChange={(e) => handleOverlay(e)} />
+      </Modal>
+    </div>
   );
 }
 
-export default GameCreator;
+export default GameSetup;
