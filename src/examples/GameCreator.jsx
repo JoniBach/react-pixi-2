@@ -13,6 +13,10 @@ import GamePlayer from "../components/gaming/GamePlayer";
 import GameSetup from "../components/gaming/GameSetup";
 import { Modal } from "../components/interface/Modal";
 import { Nav } from "../components/interface/Nav";
+import { Wizard } from "../components/interface/Wizard";
+import { Input } from "../components/interface/Input";
+import { File } from "../components/interface/File";
+import { NewGame } from "../components/gaming/NewGame";
 
 const options = {
   backgroundColor: 0x353734,
@@ -97,11 +101,15 @@ export function GameCreator({ size }) {
       // window.removeEventListener("mousemove", handleCellClick);
     };
   }, [obstacles, newCells]);
+
+  const [first, setfirst] = useState('')
+
   return (
     <>
+    <NewGame />
       {/* <GameBuilder size={size}/> */}
       {/* <GamePlayer size={size}/> */}
-      <GameSetup size={size} />
+      {/* <GameSetup size={size} /> */}
     </>
   );
 }

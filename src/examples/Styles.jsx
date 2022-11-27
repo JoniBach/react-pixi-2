@@ -24,7 +24,6 @@ const handleFile = async (file) => {
 export const Styles = () => {
   return (
     <div>
-      <Nav />
       <Modal title="styles">
         <Button> test</Button>
         <Input label="input" />

@@ -22,29 +22,36 @@ function App() {
       : window.innerHeight;
   const size = Math.floor(baseSize / 100) * 100;
 
+  const Navigation = ({ Component, size }) => {
+    return (
+      <>
+        {/* <Nav /> */}
+        <Component size={size} />
+      </>
+    );
+  };
+
   const router = createBrowserRouter([
     {
       path: "/creator",
-      element: <GameCreator size={size} />,
+      element: <Navigation Component={GameCreator} size={size} />,
     },
     {
       path: "/creator-old",
-      element: <GameCreatorOld size={size} />,
+      element: <Navigation Component={GameCreatorOld} size={size} />,
     },
     {
       path: "/map-chase",
-      element: <MapChaser size={size} />,
+      element: <Navigation Component={MapChaser} size={size} />,
     },
     {
       path: "/style",
-      element: <Styles/>,
+      element: <Navigation Component={Styles} />,
     },
   ]);
 
   return (
     <div className="game-container">
-    <Nav />
-
       <RouterProvider router={router} />
     </div>
   );
