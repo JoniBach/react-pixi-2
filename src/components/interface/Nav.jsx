@@ -1,5 +1,6 @@
 import { Menu } from "@styled-icons/material";
 import { useRef, useState } from "react";
+import { useUser } from "../../contexts/UserContext";
 import { Drawer } from "./Drawer";
 
 const styles = {
@@ -13,6 +14,7 @@ const styles = {
 
 export const Nav = ({ onChange }) => {
   const [active, setActive] = useState(false)
+  const {activeUser} = useUser()
 
   const handleClick = (event) => {
     setActive(true)
@@ -29,6 +31,7 @@ export const Nav = ({ onChange }) => {
         <div className={styles.titleSpace}>
           games
         </div>
+       {activeUser?.isLoggedIn ? ` hello ${activeUser?.username}` : 'login'}
       </label>
     </div>
 

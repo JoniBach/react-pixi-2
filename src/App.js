@@ -1,11 +1,11 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { Container, Sprite, Stage, useTick } from "@inlet/react-pixi";
 import BasicExample from "./examples/BasicExample";
 import Quiz from "./examples/Quiz";
 import MovingBunny from "./examples/MovingBunny";
-import { useController } from "./contexts/ControllerContext";
+import { useController, UserContextProvider } from "./contexts/UserContext";
 import { ForestAdventure } from "./examples/ForestAdventure";
 import MapChaser from "./examples/MapChaser";
 import GridGame from "./examples/GridGame";
@@ -14,6 +14,8 @@ import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 import { Styles } from "./examples/Styles";
 import GameCreatorOld from "./examples/GameCreatorOld";
 import { Nav } from "./components/interface/Nav";
+import axios from "axios";
+import { Auth } from "./examples/Auth";
 
 function App() {
   const baseSize =
@@ -24,14 +26,18 @@ function App() {
 
   const Navigation = ({ Component, size }) => {
     return (
-      <>
-        {/* <Nav /> */}
+      <UserContextProvider>
+        <Nav />
         <Component size={size} />
-      </>
+      </UserContextProvider>
     );
   };
 
   const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Navigation Component={Auth} />,
+    },
     {
       path: "/creator",
       element: <Navigation Component={GameCreator} size={size} />,
@@ -51,7 +57,7 @@ function App() {
   ]);
 
   return (
-    <div className="game-container">
+    <div>
       <RouterProvider router={router} />
     </div>
   );

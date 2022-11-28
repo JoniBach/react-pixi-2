@@ -1,6 +1,14 @@
-import { ArtTrack, Edit, Gamepad, LockClock, Menu, Palette } from "@styled-icons/material";
+import {
+  ArtTrack,
+  Edit,
+  Gamepad,
+  LockClock,
+  Menu,
+  Palette,
+} from "@styled-icons/material";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { useUser } from "../../contexts/UserContext";
 
 const styles = {
   container:
@@ -11,6 +19,11 @@ const styles = {
   bg: "rounded-r-2xl fixed w-full h-full bg-gray-900 opacity-50",
 };
 
+
+export const Drawer = ({ onChange, active, onClose }) => {
+
+  const {signOut} = useUser()
+  
 const data = [
   {
     label: "game creator",
@@ -32,15 +45,18 @@ const data = [
     link: "/styles",
     Icon: ({ color }) => <Palette color={color} />,
   },
+  {
+    label: "log out",
+    onClick: () => signOut(),
+    Icon: ({ color }) => <Palette color={color} />,
+  },
 ];
-
-export const Drawer = ({ onChange, active, onClose }) => {
   const handleEscape = ({ key }) => {
     if (key === "Escape") {
       onClose();
     }
   };
-  console.log(active)
+  console.log(active);
 
   useEffect(() => {
     window.addEventListener("keydown", handleEscape);
@@ -56,12 +72,20 @@ export const Drawer = ({ onChange, active, onClose }) => {
         <>
           <div className={styles.bg} />
           <div className={styles.container}>
-            {data.map(({ label, link, Icon }) => (
-                <Link className={styles.item} to={link}>
-                <div className={styles.icon}>{<Icon color="white" />}</div>
-                <div className={styles.text}>{label}</div>
-                </Link>
-              
+            {data.map(({ label, link, Icon, onClick }) => (
+              <div onClick={onClick}>
+                {link ? (
+                  <Link className={styles.item}  to={link}>
+                    <div className={styles.icon}>{<Icon color="white" />}</div>
+                    <div className={styles.text}>{label}</div>
+                  </Link>
+                ) : (
+                  <div className={styles.item} >
+                    <div className={styles.icon}>{<Icon color="white" />}</div>
+                    <div className={styles.text}>{label}</div>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </>
