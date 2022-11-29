@@ -1,12 +1,17 @@
 import {
+  Add,
   ArtTrack,
+  BikeScooter,
   Edit,
   Gamepad,
+  Games,
+  Home,
   LockClock,
   Login,
   Logout,
   Menu,
   Palette,
+  PlayArrow,
   VerifiedUser,
 } from "@styled-icons/material";
 import { useEffect, useRef, useState } from "react";
@@ -22,55 +27,68 @@ const styles = {
   bg: "rounded-r-2xl fixed w-full h-full bg-gray-900 opacity-50",
 };
 
-
 export const Drawer = ({ onChange, active, onClose }) => {
+  const { signOut } = useUser();
 
-  const {signOut} = useUser()
-  
-const data = [
-  {
-    label: "game creator",
-    link: "/creator",
-    Icon: ({ color }) => <Edit color={color} />,
-  },
-  {
-    label: "original game creator",
-    link: "/creator-old",
-    Icon: ({ color }) => <LockClock color={color} />,
-  },
-  {
-    label: "game player",
-    link: "/player",
-    Icon: ({ color }) => <Gamepad color={color} />,
-  },
-  {
-    label: "style guide",
-    link: "/styles",
-    Icon: ({ color }) => <Palette color={color} />,
-  },
-  {
-    label: "sign up",
-    link: "/signup",
-    Icon: ({ color }) => <VerifiedUser color={color} />,
-  },
-  {
-    label: "sign in",
-    link: "/signin",
-    Icon: ({ color }) => <Login color={color} />,
-  },
+  const data = [
+    {
+      label: "dashboard",
+      link: "/dash",
+      Icon: ({ color }) => <Home color={color} />,
+    },
+    {
+      label: "new",
+      link: "/dash/new",
+      Icon: ({ color }) => <Add color={color} />,
+    },
+    {
+      label: "edit",
+      link: "/dash/edit",
+      Icon: ({ color }) => <Edit color={color} />,
+    },
+    {
+      label: "play",
+      link: "/dash/play",
+      Icon: ({ color }) => <PlayArrow color={color} />,
+    },
 
-  {
-    label: "sign out",
-    onClick: () => signOut(),
-    Icon: ({ color }) => <Logout color={color} />,
-  },
-];
+    // {
+    //   label: "game player",
+    //   link: "/player",
+    //   Icon: ({ color }) => <PlayArrow color={color} />,
+    // },
+    // {
+    //   label: "style guide",
+    //   link: "/styles",
+    //   Icon: ({ color }) => <Palette color={color} />,
+    // },
+    {
+      label: "original game creator",
+      link: "/creator-old",
+      Icon: ({ color }) => <BikeScooter color={color} />,
+    },
+    {
+      label: "sign up",
+      link: "/signup",
+      Icon: ({ color }) => <VerifiedUser color={color} />,
+    },
+    {
+      label: "sign in",
+      link: "/signin",
+      Icon: ({ color }) => <Login color={color} />,
+    },
+
+    {
+      label: "sign out",
+      onClick: () => signOut(),
+      Icon: ({ color }) => <Logout color={color} />,
+    },
+  ];
   const handleEscape = ({ key }) => {
     if (key === "Escape") {
       onClose();
     }
   };
-  console.log(active);
 
   useEffect(() => {
     window.addEventListener("keydown", handleEscape);
@@ -89,12 +107,12 @@ const data = [
             {data.map(({ label, link, Icon, onClick }) => (
               <div onClick={onClick}>
                 {link ? (
-                  <Link className={styles.item}  to={link}>
+                  <Link className={styles.item} to={link}>
                     <div className={styles.icon}>{<Icon color="white" />}</div>
                     <div className={styles.text}>{label}</div>
                   </Link>
                 ) : (
-                  <div className={styles.item} >
+                  <div className={styles.item}>
                     <div className={styles.icon}>{<Icon color="white" />}</div>
                     <div className={styles.text}>{label}</div>
                   </div>

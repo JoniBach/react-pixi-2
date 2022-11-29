@@ -9,6 +9,10 @@ import GameCreatorOld from "./examples/GameCreatorOld";
 import { Nav } from "./components/interface/Nav";
 import { SignIn } from "./examples/SignIn";
 import { SignUp } from "./examples/SignUp";
+import { GameDash } from "./screens/GameDash";
+import { NewGame } from "./screens/NewGame";
+import { EditGame } from "./screens/EditGame";
+import { PlayGame } from "./screens/PlayGame";
 
 function App() {
   const baseSize =
@@ -27,14 +31,26 @@ function App() {
   };
 
   const Home = () => {
-    return (
-      <div>
-        welcome
-      </div>
-    )
-  }
+    return <div>welcome</div>;
+  };
 
   const router = createBrowserRouter([
+    {
+      path: "/dash",
+      element: <Navigation Component={GameDash} />,
+    },
+    {
+      path: "/dash/new",
+      element: <Navigation Component={NewGame} />,
+    },
+    {
+      path: "/dash/edit",
+      element: <Navigation Component={EditGame} />,
+    },
+    {
+      path: "/dash/play",
+      element: <Navigation Component={PlayGame} />,
+    },
     {
       path: "/",
       element: <Navigation Component={Home} />,
@@ -52,6 +68,10 @@ function App() {
       element: <Navigation Component={GameCreator} size={size} />,
     },
     {
+      path: "/player",
+      element: <Navigation Component={GameCreator} size={size} />,
+    },
+    {
       path: "/creator-old",
       element: <Navigation Component={GameCreatorOld} size={size} />,
     },
@@ -60,7 +80,7 @@ function App() {
       element: <Navigation Component={MapChaser} size={size} />,
     },
     {
-      path: "/style",
+      path: "/styles",
       element: <Navigation Component={Styles} />,
     },
   ]);

@@ -11,7 +11,6 @@ export function useUser() {
 export const UserContextProvider = ({ children }) => {
   const [activeUser, setActiveUser] = useState(null);
   const history = useNavigate();
-
   const checkToken = async () => {
     const { data } = await axios.get("/isUserAuth", {
       headers: {
@@ -32,13 +31,15 @@ export const UserContextProvider = ({ children }) => {
 
   const signIn = async (user) => {
     const { data } = await axios.post("/login", user);
-
+    localStorage.setItem("token", data.token);
+    console.log(data);
     return data;
   };
 
   const signUp = async (user) => {
     const { data } = await axios.post("/register", user);
     localStorage.setItem("token", data.token);
+
     checkToken();
     return data;
   };
@@ -47,7 +48,6 @@ export const UserContextProvider = ({ children }) => {
     localStorage.removeItem("token");
     setActiveUser(null);
     checkToken();
-
   };
 
   useEffect(() => {

@@ -10,7 +10,7 @@ const styles = {
   label: "flex border-transparent rounded-l-full bg-white w-full ",
   button:
     "shrink-0 w-10 h-10 bg-gradient-to-r from-red-400 to-pink-500 rounded-full  text-white hover:bg-sky-700",
-  titleSpace: "m-1 text-2xl h-full w-full align-middle text-center",
+  titleSpace: "shrink-0 m-1 text-2xl h-full w-full align-middle text-center",
 };
 
 export const Nav = ({ onChange }) => {
@@ -25,7 +25,6 @@ export const Nav = ({ onChange }) => {
   useEffect(() => {
     setActive(false);
   }, [pathname]);
-
   return (
     <>
       <Drawer active={active} onClose={() => setActive(false)} />
@@ -35,7 +34,7 @@ export const Nav = ({ onChange }) => {
             <Menu size={20} />
           </button>
           <div className={styles.titleSpace}>games</div>
-          {activeUser?.isLoggedIn ? ` hello ${activeUser?.username}` : "login"}
+          {/* {activeUser?.isLoggedIn ? `${activeUser?.username}` : "login or sign up"} */}
         </label>
       </div>
     </>
