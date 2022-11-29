@@ -1,12 +1,5 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { useEffect, useReducer, useRef, useState } from "react";
-import { Container, Sprite, Stage, useTick } from "@inlet/react-pixi";
-import BasicExample from "./examples/BasicExample";
-import Quiz from "./examples/Quiz";
-import MovingBunny from "./examples/MovingBunny";
 import { useController, UserContextProvider } from "./contexts/UserContext";
-import { ForestAdventure } from "./examples/ForestAdventure";
 import MapChaser from "./examples/MapChaser";
 import GridGame from "./examples/GridGame";
 import GameCreator from "./examples/GameCreator";
@@ -14,8 +7,8 @@ import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 import { Styles } from "./examples/Styles";
 import GameCreatorOld from "./examples/GameCreatorOld";
 import { Nav } from "./components/interface/Nav";
-import axios from "axios";
-import { Auth } from "./examples/Auth";
+import { SignIn } from "./examples/SignIn";
+import { SignUp } from "./examples/SignUp";
 
 function App() {
   const baseSize =
@@ -33,10 +26,26 @@ function App() {
     );
   };
 
+  const Home = () => {
+    return (
+      <div>
+        welcome
+      </div>
+    )
+  }
+
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Navigation Component={Auth} />,
+      element: <Navigation Component={Home} />,
+    },
+    {
+      path: "/signin",
+      element: <Navigation Component={SignIn} />,
+    },
+    {
+      path: "/signup",
+      element: <Navigation Component={SignUp} />,
     },
     {
       path: "/creator",

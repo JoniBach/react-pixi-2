@@ -1,5 +1,6 @@
 import { Menu } from "@styled-icons/material";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
 import { Drawer } from "./Drawer";
 
@@ -9,32 +10,34 @@ const styles = {
   label: "flex border-transparent rounded-l-full bg-white w-full ",
   button:
     "shrink-0 w-10 h-10 bg-gradient-to-r from-red-400 to-pink-500 rounded-full  text-white hover:bg-sky-700",
-  titleSpace: 'm-1 text-2xl h-full w-full align-middle text-center'
+  titleSpace: "m-1 text-2xl h-full w-full align-middle text-center",
 };
 
 export const Nav = ({ onChange }) => {
-  const [active, setActive] = useState(false)
-  const {activeUser} = useUser()
+  const [active, setActive] = useState(false);
+  const { activeUser } = useUser();
+  const { pathname } = useLocation();
 
   const handleClick = (event) => {
-    setActive(true)
+    setActive(true);
   };
+
+  useEffect(() => {
+    setActive(false);
+  }, [pathname]);
 
   return (
     <>
-    <Drawer active={active} onClose={() => setActive(false)} />
-    <div className={styles.container}>
-      <label className={styles.label}>
-        <button onClick={() => handleClick()} className={styles.button}>
-          <Menu size={20} />
-        </button>
-        <div className={styles.titleSpace}>
-          games
-        </div>
-       {activeUser?.isLoggedIn ? ` hello ${activeUser?.username}` : 'login'}
-      </label>
-    </div>
-
+      <Drawer active={active} onClose={() => setActive(false)} />
+      <div className={styles.container}>
+        <label className={styles.label}>
+          <button onClick={() => handleClick()} className={styles.button}>
+            <Menu size={20} />
+          </button>
+          <div className={styles.titleSpace}>games</div>
+          {activeUser?.isLoggedIn ? ` hello ${activeUser?.username}` : "login"}
+        </label>
+      </div>
     </>
   );
 };

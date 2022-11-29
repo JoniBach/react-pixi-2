@@ -19,10 +19,8 @@ export const UserContextProvider = ({ children }) => {
       },
     });
 
-    
-
     if (data.isLoggedIn) {
-      setActiveUser(data)
+      setActiveUser(data);
     }
     // .then((data) =>
     //   data.isLoggedIn
@@ -32,32 +30,29 @@ export const UserContextProvider = ({ children }) => {
     console.log(data);
   };
 
-
   const signIn = async (user) => {
     const { data } = await axios.post("/login", user);
-    
-    console.log(data);
-    localStorage.setItem("token", data.token);
-    checkToken()
+
+    return data;
   };
 
   const signUp = async (user) => {
     const { data } = await axios.post("/register", user);
     localStorage.setItem("token", data.token);
-
-    console.log(data);
-
+    checkToken();
+    return data;
   };
-  console.log(localStorage.getItem("token"));
 
   const signOut = () => {
     localStorage.removeItem("token");
-    setActiveUser(null)
+    setActiveUser(null);
+    checkToken();
+
   };
 
   useEffect(() => {
     checkToken();
-  }, [localStorage]);
+  }, []);
 
   return (
     <UserContext.Provider

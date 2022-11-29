@@ -7,26 +7,16 @@ import { Input } from "../components/interface/Input";
 import { Modal } from "../components/interface/Modal";
 import { useUser } from "../contexts/UserContext";
 
-export const Auth = () => {
-  const history = useNavigate();
-  const { signUp, signIn } = useUser();
+export const SignUp = () => {
+  const navigate = useNavigate();
+  const { signUp } = useUser();
 
   const [showLogin, setShowLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
 
-  const title = showLogin ? "login" : "sign up";
-  const switchButton = `or ${showLogin ? "sign up" : "login"}`;
-
-  const handleLogin = async (e) => {
-    const user = {
-      email,
-      password,
-      username,
-    };
-    signIn(user);
-  };
+  const title = "sign up";
 
   const handleRegister = async (e) => {
     const user = {
@@ -34,13 +24,22 @@ export const Auth = () => {
       password,
       username,
     };
-    signUp(user);
-  };
+    const res = await signUp(user);
+    alert(res?.message);
 
-  const handleSubmit = (e) => (showLogin ? handleLogin(e) : handleRegister(e));
+    if (res?.username) {
+      navigate("/");
+    }
+    return user;
+  };
 
   return (
     <Modal title={title}>
+      <Input
+        label="username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
       <Input
         label="email"
         value={email}
@@ -52,18 +51,14 @@ export const Auth = () => {
         type="password"
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Input
-        label="username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
+
       <div className="flex">
-        <Button onClick={() => setShowLogin(!showLogin)}>
+        <Button onClick={() => navigate("/signin")}>
           <Repeat size={20} />
-          {switchButton}
+          or sign in
         </Button>
         <div className="w-full" />
-        <Button onClick={() => handleSubmit()}>
+        <Button onClick={() => handleRegister()}>
           submit <Send size={20} />
         </Button>
       </div>

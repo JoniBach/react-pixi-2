@@ -3,8 +3,11 @@ import {
   Edit,
   Gamepad,
   LockClock,
+  Login,
+  Logout,
   Menu,
   Palette,
+  VerifiedUser,
 } from "@styled-icons/material";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
@@ -46,9 +49,20 @@ const data = [
     Icon: ({ color }) => <Palette color={color} />,
   },
   {
-    label: "log out",
+    label: "sign up",
+    link: "/signup",
+    Icon: ({ color }) => <VerifiedUser color={color} />,
+  },
+  {
+    label: "sign in",
+    link: "/signin",
+    Icon: ({ color }) => <Login color={color} />,
+  },
+
+  {
+    label: "sign out",
     onClick: () => signOut(),
-    Icon: ({ color }) => <Palette color={color} />,
+    Icon: ({ color }) => <Logout color={color} />,
   },
 ];
   const handleEscape = ({ key }) => {
