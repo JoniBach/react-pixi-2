@@ -16,7 +16,7 @@ export const PerpetualCharacter = ({
   obstacleCells,
   spawnCell,
   invert,
-  cellQuantity
+  cellQuantity,
 }) => {
   const pace = 1;
   const cellSize = (size * 2) / cellQuantity;
@@ -24,7 +24,7 @@ export const PerpetualCharacter = ({
   const { characterRef, pos, setObstacle, setSpawn } = usePerpetualMovement({
     pace,
   });
-  
+
   return (
     <>
       {spawnCell && (

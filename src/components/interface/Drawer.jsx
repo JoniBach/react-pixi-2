@@ -28,7 +28,7 @@ const styles = {
 };
 
 export const Drawer = ({ onChange, active, onClose }) => {
-  const { signOut } = useUser();
+  const { signOut, activeUser } = useUser();
 
   const data = [
     {
@@ -41,27 +41,7 @@ export const Drawer = ({ onChange, active, onClose }) => {
       link: "/dash/new",
       Icon: ({ color }) => <Add color={color} />,
     },
-    {
-      label: "edit",
-      link: "/dash/edit",
-      Icon: ({ color }) => <Edit color={color} />,
-    },
-    {
-      label: "play",
-      link: "/dash/play",
-      Icon: ({ color }) => <PlayArrow color={color} />,
-    },
 
-    // {
-    //   label: "game player",
-    //   link: "/player",
-    //   Icon: ({ color }) => <PlayArrow color={color} />,
-    // },
-    // {
-    //   label: "style guide",
-    //   link: "/styles",
-    //   Icon: ({ color }) => <Palette color={color} />,
-    // },
     {
       label: "original game creator",
       link: "/creator-old",
@@ -71,17 +51,20 @@ export const Drawer = ({ onChange, active, onClose }) => {
       label: "sign up",
       link: "/signup",
       Icon: ({ color }) => <VerifiedUser color={color} />,
+      hide: activeUser?.username,
     },
     {
       label: "sign in",
       link: "/signin",
       Icon: ({ color }) => <Login color={color} />,
+      hide: activeUser?.username,
     },
 
     {
       label: "sign out",
       onClick: () => signOut(),
       Icon: ({ color }) => <Logout color={color} />,
+      hide: !activeUser?.username,
     },
   ];
   const handleEscape = ({ key }) => {
@@ -104,21 +87,28 @@ export const Drawer = ({ onChange, active, onClose }) => {
         <>
           <div className={styles.bg} />
           <div className={styles.container}>
-            {data.map(({ label, link, Icon, onClick }) => (
-              <div onClick={onClick}>
-                {link ? (
-                  <Link className={styles.item} to={link}>
-                    <div className={styles.icon}>{<Icon color="white" />}</div>
-                    <div className={styles.text}>{label}</div>
-                  </Link>
-                ) : (
-                  <div className={styles.item}>
-                    <div className={styles.icon}>{<Icon color="white" />}</div>
-                    <div className={styles.text}>{label}</div>
+            {data.map(
+              ({ label, link, Icon, onClick, hide }) =>
+                !hide && (
+                  <div onClick={onClick}>
+                    {link ? (
+                      <Link className={styles.item} to={link}>
+                        <div className={styles.icon}>
+                          {<Icon color="white" />}
+                        </div>
+                        <div className={styles.text}>{label}</div>
+                      </Link>
+                    ) : (
+                      <div className={styles.item}>
+                        <div className={styles.icon}>
+                          {<Icon color="white" />}
+                        </div>
+                        <div className={styles.text}>{label}</div>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            ))}
+                )
+            )}
           </div>
         </>
       )}

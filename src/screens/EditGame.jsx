@@ -13,7 +13,7 @@ export const EditGame = () => {
   const [game, setGame] = useState({});
   const navigate = useNavigate();
 
-  console.log(game);
+  console.log(id);
 
   const handleFetch = async () => {
     const res = await getGame(id);
@@ -46,12 +46,13 @@ export const EditGame = () => {
 
   return (
     <div>
-      {game && (
+      {game?.cellQuantity && (
         <>
           <GameBuilder
             size={getSize}
             initialEnvironment={game.environmentData}
             onSave={handleSave}
+            cellQuantity={game.cellQuantity}
           />
         </>
       )}

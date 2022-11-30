@@ -24,7 +24,7 @@ export const SignIn = () => {
     const res = await signIn(user);
     alert(res?.message);
     if (res?.token) {
-      navigate("/");
+      navigate("/dash");
     }
   };
 

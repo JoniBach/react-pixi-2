@@ -10,7 +10,7 @@ export function useUser() {
 
 export const UserContextProvider = ({ children }) => {
   const [activeUser, setActiveUser] = useState(null);
-  const history = useNavigate();
+  const navigate = useNavigate();
   const checkToken = async () => {
     const { data } = await axios.get("/isUserAuth", {
       headers: {
@@ -41,6 +41,8 @@ export const UserContextProvider = ({ children }) => {
   const signOut = () => {
     localStorage.removeItem("token");
     setActiveUser(null);
+    alert("user signed out");
+    navigate("/signin");
     checkToken();
   };
 

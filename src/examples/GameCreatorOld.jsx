@@ -87,7 +87,7 @@ export function GameCreatorOld({ size }) {
   useEffect(() => {
     window.addEventListener("mousedown", handleCellClick);
     // window.addEventListener("mousemove", handleCellClick);
-    
+
     return () => {
       window.removeEventListener("mousedown", handleCellClick);
       // window.removeEventListener("mousemove", handleCellClick);
@@ -95,7 +95,6 @@ export function GameCreatorOld({ size }) {
   }, [obstacles, newCells]);
   return (
     <>
-    
       {editMode && (
         <Stage width={size} height={size} options={options}>
           <MapGrid
@@ -103,13 +102,19 @@ export function GameCreatorOld({ size }) {
             invert
             color={0x444444}
             gridItems={cellQuantity}
+            cellQuantity={cellQuantity}
             scale={0.9}
             size={size}
             layout={[]}
             onRender={(e) => setObstacles(e)}
           />
-           {overlay && (
-            <Sprite alpha={0.5} image={overlay.name} width={size} height={size} />
+          {overlay && (
+            <Sprite
+              alpha={0.5}
+              image={overlay.name}
+              width={size}
+              height={size}
+            />
           )}
           <MapGrid
             type="obstacle"
@@ -117,12 +122,13 @@ export function GameCreatorOld({ size }) {
             gridItems={cellQuantity}
             scale={0.9}
             size={size}
+            cellQuantity={cellQuantity}
             layout={newCells}
             onRender={(e) => setNewCellObjs(e)}
           />
         </Stage>
       )}
-  
+
       {!editMode && newCells.length && (
         <Stage width={size} height={size} options={options}>
           <PerpetualCharacter
@@ -132,7 +138,7 @@ export function GameCreatorOld({ size }) {
             spawnCell={[0, 0]}
             cellQuantity={cellQuantity}
           />
-           {overlay && (
+          {overlay && (
             <Sprite alpha={1} image={overlay.name} width={size} height={size} />
           )}
         </Stage>

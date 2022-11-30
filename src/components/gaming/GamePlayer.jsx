@@ -8,26 +8,32 @@ const options = {
   backgroundColor: 0x353734,
 };
 
-export function GamePlayer({ size }) {
-  const [newCells, setNewCells] = useState([]);
+export function GamePlayer({ size, initialEnvironment, cellQuantity, image }) {
+  const [newCells, setNewCells] = useState(initialEnvironment || []);
 
-  const [cellQuantity, setCellQuantity] = useState(40);
-  const [overlay, setoverlay] = useState(null);
+  // const [overlay, setoverlay] = useState(null);
+  useEffect(() => {
+    if (initialEnvironment) {
+      setNewCells(initialEnvironment);
+    }
+  }, [initialEnvironment]);
 
   return (
     <>
-      <Stage width={size} height={size} options={options}>
-        <PerpetualCharacter
-          image="player.png"
-          size={size}
-          obstacleCells={newCells}
-          spawnCell={[0, 0]}
-          cellQuantity={cellQuantity}
-        />
-        {overlay && (
+      {newCells.length && (
+        <Stage width={size} height={size} options={options}>
+          <PerpetualCharacter
+            image={image}
+            size={size}
+            obstacleCells={newCells}
+            spawnCell={[0, 0]}
+            cellQuantity={cellQuantity}
+          />
+        </Stage>
+      )}
+      {/* {overlay && (
           <Sprite alpha={1} image={overlay.name} width={size} height={size} />
-        )}
-      </Stage>
+        )} */}
     </>
   );
 }

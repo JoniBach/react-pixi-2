@@ -9,7 +9,7 @@ export const NewGame = () => {
   const { createGame } = useGame();
   const navigate = useNavigate();
   const [name, setName] = useState("");
-  const [cells, setCells] = useState("");
+  const [cells, setCells] = useState(20);
   const [overlay, setOverlay] = useState("");
   const { activeUser } = useUser();
 
@@ -24,8 +24,9 @@ export const NewGame = () => {
       environmentData: [],
       spawnData: [],
       imageOverlay: overlay,
+      cellQuantity: cells,
     };
-
+    console.log(payload);
     const res = await createGame(payload);
     alert(res.message);
 
@@ -57,6 +58,7 @@ export const NewGame = () => {
           <Input
             label="number of cells"
             id="cells"
+            type="number"
             value={cells}
             onChange={(e) => setCells(e.target.value)}
           />

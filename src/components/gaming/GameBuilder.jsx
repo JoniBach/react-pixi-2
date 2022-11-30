@@ -23,7 +23,13 @@ const getCell = (a, b) => {
   return false;
 };
 
-export function GameBuilder({ size, initialEnvironment, onSave }) {
+export function GameBuilder({
+  size,
+  initialEnvironment,
+  onSave,
+  cellQuantity,
+}) {
+  console.log("1", cellQuantity);
   const [obstacles, setObstacles] = useState([]);
   const [spawn, setSpawn] = useState([]);
   const [newCells, setNewCells] = useState([]);
@@ -67,7 +73,6 @@ export function GameBuilder({ size, initialEnvironment, onSave }) {
     }
   }, [initialEnvironment]);
 
-  const [cellQuantity, setCellQuantity] = useState(40);
   const [overlay, setoverlay] = useState(null);
 
   useEffect(() => {
@@ -79,7 +84,6 @@ export function GameBuilder({ size, initialEnvironment, onSave }) {
       // window.removeEventListener("mousemove", handleCellClick);
     };
   }, [obstacles, newCells]);
-  console.log(spawn);
   return (
     <>
       <Stage width={size} height={size} options={options}>
