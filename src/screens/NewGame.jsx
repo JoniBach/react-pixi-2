@@ -28,7 +28,6 @@ export const NewGame = () => {
 
     const res = await createGame(payload);
     alert(res.message);
-    console.log(res.body);
 
     if (res?.body?.title) {
       navigate("/dash");

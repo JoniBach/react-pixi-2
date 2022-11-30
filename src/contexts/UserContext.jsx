@@ -21,12 +21,6 @@ export const UserContextProvider = ({ children }) => {
     if (data.isLoggedIn) {
       setActiveUser(data);
     }
-    // .then((data) =>
-    //   data.isLoggedIn
-    //     ? history.pushState("/dashboard")
-    //     : history.pushState("/")
-    // );
-    console.log(data);
   };
 
   const signIn = async (user) => {

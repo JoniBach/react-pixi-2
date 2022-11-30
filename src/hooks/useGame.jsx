@@ -5,5 +5,26 @@ export const useGame = () => {
     const { data } = await axios.post("/create", gameData);
     return data;
   };
-  return { createGame };
+  const saveGame = async (gameData) => {
+    console.log(gameData);
+    const { data } = await axios.put("/save", gameData);
+    return data;
+  };
+  const getGames = async (username) => {
+    const { data } = await axios.get("/list", {
+      params: {
+        username,
+      },
+    });
+    return data;
+  };
+  const getGame = async (_id) => {
+    const { data } = await axios.get("/load-one", {
+      params: {
+        _id,
+      },
+    });
+    return data;
+  };
+  return { createGame, getGames, getGame, saveGame };
 };

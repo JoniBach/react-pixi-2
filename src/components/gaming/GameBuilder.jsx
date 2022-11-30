@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Sprite, Stage } from "@inlet/react-pixi";
+import { Save } from "@styled-icons/material";
 import { useEffect, useState } from "react";
+import { Button } from "../interface/Button";
 import { MapGrid } from "../MapGrid";
 
 const options = {
@@ -21,8 +23,9 @@ const getCell = (a, b) => {
   return false;
 };
 
-export function GameBuilder({ size }) {
+export function GameBuilder({ size, initialEnvironment, onSave }) {
   const [obstacles, setObstacles] = useState([]);
+  const [spawn, setSpawn] = useState([]);
   const [newCells, setNewCells] = useState([]);
   const [newCellObjs, setNewCellObjs] = useState([]);
 
@@ -57,6 +60,13 @@ export function GameBuilder({ size }) {
     }
   };
 
+  useEffect(() => {
+    console.log(initialEnvironment);
+    if (initialEnvironment) {
+      setNewCells(initialEnvironment);
+    }
+  }, [initialEnvironment]);
+
   const [cellQuantity, setCellQuantity] = useState(40);
   const [overlay, setoverlay] = useState(null);
 
@@ -69,31 +79,38 @@ export function GameBuilder({ size }) {
       // window.removeEventListener("mousemove", handleCellClick);
     };
   }, [obstacles, newCells]);
+  console.log(spawn);
   return (
-    <Stage width={size} height={size} options={options}>
-      <MapGrid
-        type="obstacle"
-        invert
-        color={0x444444}
-        gridItems={cellQuantity}
-        scale={0.9}
-        size={size}
-        layout={[]}
-        onRender={(e) => setObstacles(e)}
-      />
-      {overlay && (
-        <Sprite alpha={0.5} image={overlay.name} width={size} height={size} />
-      )}
-      <MapGrid
-        type="obstacle"
-        color={0xffff00}
-        gridItems={cellQuantity}
-        scale={0.9}
-        size={size}
-        layout={newCells}
-        onRender={(e) => setNewCellObjs(e)}
-      />
-    </Stage>
+    <>
+      <Stage width={size} height={size} options={options}>
+        <MapGrid
+          type="obstacle"
+          invert
+          color={0x444444}
+          gridItems={cellQuantity}
+          scale={0.9}
+          size={size}
+          layout={[]}
+          onRender={(e) => setObstacles(e)}
+        />
+        {overlay && (
+          <Sprite alpha={0.5} image={overlay.name} width={size} height={size} />
+        )}
+        <MapGrid
+          type="obstacle"
+          color={0xffff00}
+          gridItems={cellQuantity}
+          scale={0.9}
+          size={size}
+          layout={newCells}
+          onRender={(e) => setNewCellObjs(e)}
+        />
+      </Stage>
+
+      <Button onClick={() => onSave(newCells)}>
+        <Save size={20} /> Save
+      </Button>
+    </>
   );
 }
 
