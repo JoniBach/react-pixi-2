@@ -15,7 +15,7 @@ import {
   VerifiedUser,
 } from "@styled-icons/material";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
 
 const styles = {
@@ -29,17 +29,20 @@ const styles = {
 
 export const Drawer = ({ onChange, active, onClose }) => {
   const { signOut, activeUser } = useUser();
+  const navigate = useNavigate();
 
   const data = [
     {
       label: "dashboard",
       link: "/dash",
       Icon: ({ color }) => <Home color={color} />,
+      hide: !activeUser?.username,
     },
     {
       label: "new",
       link: "/dash/new",
       Icon: ({ color }) => <Add color={color} />,
+      hide: !activeUser?.username,
     },
 
     {
@@ -62,7 +65,7 @@ export const Drawer = ({ onChange, active, onClose }) => {
 
     {
       label: "sign out",
-      onClick: () => signOut(),
+      onClick: () => signOut().then(() => navigate("/signin")),
       Icon: ({ color }) => <Logout color={color} />,
       hide: !activeUser?.username,
     },

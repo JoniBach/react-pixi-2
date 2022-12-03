@@ -1,6 +1,5 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export const UserContext = createContext();
 
@@ -10,7 +9,8 @@ export function useUser() {
 
 export const UserContextProvider = ({ children }) => {
   const [activeUser, setActiveUser] = useState(null);
-  const navigate = useNavigate();
+  const [dynamicPageTitle, setDynamicPageTitle] =
+    useState("welcome to gridiak");
   const checkToken = async () => {
     const { data } = await axios.get("/isUserAuth", {
       headers: {
@@ -32,18 +32,18 @@ export const UserContextProvider = ({ children }) => {
 
   const signUp = async (user) => {
     const { data } = await axios.post("/register", user);
-    localStorage.setItem("token", data.token);
 
     checkToken();
     return data;
   };
 
-  const signOut = () => {
+  const signOut = async () => {
     localStorage.removeItem("token");
     setActiveUser(null);
     alert("user signed out");
-    navigate("/signin");
+
     checkToken();
+    return true;
   };
 
   useEffect(() => {
@@ -57,6 +57,11 @@ export const UserContextProvider = ({ children }) => {
         signUp,
         signIn,
         signOut,
+        dynamicPageTitle: dynamicPageTitle.replace(
+          "$name",
+          activeUser?.username
+        ),
+        setDynamicPageTitle,
       }}
     >
       {children}

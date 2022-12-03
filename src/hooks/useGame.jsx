@@ -6,7 +6,6 @@ export const useGame = () => {
     return data;
   };
   const saveGame = async (gameData) => {
-    console.log(gameData);
     const { data } = await axios.put("/save", gameData);
     return data;
   };
@@ -24,6 +23,7 @@ export const useGame = () => {
         _id,
       },
     });
+    console.log(data);
     return data;
   };
   return { createGame, getGames, getGame, saveGame };

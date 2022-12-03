@@ -13,7 +13,7 @@ export const EditGame = () => {
   const [game, setGame] = useState({});
   const navigate = useNavigate();
 
-  console.log(id);
+  console.log(game);
 
   const handleFetch = async () => {
     const res = await getGame(id);

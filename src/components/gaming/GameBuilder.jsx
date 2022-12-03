@@ -9,8 +9,9 @@ const options = {
   backgroundColor: 0x353734,
 };
 
-const getCell = (a, b) => {
-  var ab = a.getBounds();
+const getCell = (a, b, init) => {
+  const bounds = a.getBounds();
+  var ab = { ...bounds, x: bounds.x - init.x, y: bounds.y - init.y };
   var bb = { x: b.x, y: b.y, width: 1, height: 1 };
   if (
     ab.x + ab.width > bb.x &&
@@ -28,8 +29,8 @@ export function GameBuilder({
   initialEnvironment,
   onSave,
   cellQuantity,
+  binaryOverlay,
 }) {
-  console.log("1", cellQuantity);
   const [obstacles, setObstacles] = useState([]);
   const [spawn, setSpawn] = useState([]);
   const [newCells, setNewCells] = useState([]);
@@ -48,7 +49,8 @@ export function GameBuilder({
   };
 
   const handleCellClick = (click) => {
-    const x = obstacles?.filter((ob) => getCell(ob, click));
+    const init = obstacles[0].getBounds();
+    const x = obstacles?.filter((ob) => getCell(ob, click, init));
     if (x.length) {
       const cellString = x[0]?.id;
       const cellArr = cellString.split("-");
@@ -67,7 +69,6 @@ export function GameBuilder({
   };
 
   useEffect(() => {
-    console.log(initialEnvironment);
     if (initialEnvironment) {
       setNewCells(initialEnvironment);
     }
@@ -75,18 +76,80 @@ export function GameBuilder({
 
   const [overlay, setoverlay] = useState(null);
 
+  const cellSize = size / cellQuantity; // 100
+  const obs = [];
+  const templateBase = [...Array(cellQuantity).keys()];
+
+  const template = templateBase.map((e, i) =>
+    templateBase.map((ea, ia) => [i, ia])
+  );
+
+  const checkCellExists = (cell) => {
+    const cellExsits = newCells.filter(
+      (d, i) => d[0] === cell[0] && d[1] === cell[1]
+    );
+
+    return cellExsits.length > 0;
+  };
+  const [mouseActive, setMouseActive] = useState(false);
+
+  const handleClick = (cell, e) => {
+    const cellExsits = newCells.filter(
+      (d, i) => d[0] === cell[0] && d[1] === cell[1]
+    );
+
+    if (e.type === "mousedown") {
+      if (!cellExsits.length > 0) {
+        handleAdd(cell);
+      } else {
+        handleRemove(cell);
+      }
+    } else {
+      if (!cellExsits.length > 0) {
+        if (mouseActive) {
+          handleAdd(cell);
+        }
+      } else {
+        if (mouseActive) handleRemove(cell);
+      }
+    }
+  };
+
+  const handleDown = () => {
+    setMouseActive(true);
+  };
+
+  const handleUp = () => {
+    setMouseActive(false);
+  };
   useEffect(() => {
-    window.addEventListener("mousedown", handleCellClick);
-    // window.addEventListener("mousemove", handleCellClick);
+    window.addEventListener("mousedown", handleDown);
+    window.addEventListener("mouseup", handleUp);
 
     return () => {
-      window.removeEventListener("mousedown", handleCellClick);
-      // window.removeEventListener("mousemove", handleCellClick);
+      window.removeEventListener("mousedown", handleDown);
+      window.removeEventListener("mouseup", handleUp);
     };
   }, [obstacles, newCells]);
+
   return (
     <>
-      <Stage width={size} height={size} options={options}>
+      {template.map((row) => (
+        <div className="flex">
+          {row.map((cell) => (
+            <div
+              className={`bg-gray-700 ${
+                checkCellExists(cell) ? "bg-yellow-200" : "bg-grey-700"
+              }  border-solid border-2 border-gray-500 `}
+              style={{ width: cellSize, height: cellSize }}
+              onMouseEnter={(e) => handleClick(cell, e)}
+              onMouseDown={(e) => handleClick(cell, e)}
+            />
+          ))}
+        </div>
+      ))}
+
+      {/* <Stage width={size} height={size} options={options}>
         <MapGrid
           type="obstacle"
           invert
@@ -100,6 +163,14 @@ export function GameBuilder({
         {overlay && (
           <Sprite alpha={0.5} image={overlay.name} width={size} height={size} />
         )}
+        {binaryOverlay && (
+          <Sprite
+            alpha={0.5}
+            image={binaryOverlay}
+            width={size}
+            height={size}
+          />
+        )}
         <MapGrid
           type="obstacle"
           color={0xffff00}
@@ -109,7 +180,7 @@ export function GameBuilder({
           layout={newCells}
           onRender={(e) => setNewCellObjs(e)}
         />
-      </Stage>
+      </Stage> */}
 
       <Button onClick={() => onSave(newCells)}>
         <Save size={20} /> Save

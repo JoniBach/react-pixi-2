@@ -62,10 +62,10 @@ export const NewGame = () => {
             value={cells}
             onChange={(e) => setCells(e.target.value)}
           />
-          <File
+          {/* <File
             label="image overlay"
             onChange={(file) => handleOverlay(file)}
-          />
+          /> */}
           {/* <File
             label="load existing game"
             onChange={(file) => setLoadCoordinates(file)}

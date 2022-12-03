@@ -15,7 +15,7 @@ const styles = {
 
 export const Nav = ({ onChange }) => {
   const [active, setActive] = useState(false);
-  const { activeUser } = useUser();
+  const { activeUser, dynamicPageTitle } = useUser();
   const { pathname } = useLocation();
 
   const handleClick = (event) => {
@@ -33,7 +33,7 @@ export const Nav = ({ onChange }) => {
           <button onClick={() => handleClick()} className={styles.button}>
             <Menu size={20} />
           </button>
-          <div className={styles.titleSpace}>games</div>
+          <h1 className={styles.titleSpace}>{dynamicPageTitle}</h1>
           {/* {activeUser?.isLoggedIn ? `${activeUser?.username}` : "login or sign up"} */}
         </label>
       </div>

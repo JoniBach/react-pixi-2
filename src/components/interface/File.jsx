@@ -16,9 +16,24 @@ export const File = ({ onChange }) => {
     hiddenFileInput.current.click();
   };
 
-  const handleChange = (event) => {
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const handleChange = async (event) => {
     const fileUploaded = event.target.files[0];
-    onChange(fileUploaded).then(() => setFile(fileUploaded));
+    console.log(fileUploaded);
+    const file = await convertToBase64(fileUploaded);
+    onChange(file).then(() => setFile(fileUploaded));
   };
 
   return (
