@@ -13,7 +13,6 @@ export const EditGame = () => {
   const [game, setGame] = useState({});
   const navigate = useNavigate();
 
-  console.log(game);
 
   const handleFetch = async () => {
     const res = await getGame(id);
@@ -27,7 +26,7 @@ export const EditGame = () => {
   };
 
   const handleSave = async (e) => {
-    const res = await saveGame({ ...game, environmentData: e });
+    const res = await saveGame({ ...game, ...e});
     if (res?.body?._id) {
       alert(res.message);
       navigate("/dash");
@@ -50,7 +49,7 @@ export const EditGame = () => {
         <>
           <GameBuilder
             size={getSize}
-            initialEnvironment={game.environmentData}
+            initialEnvironment={game}
             onSave={handleSave}
             cellQuantity={game.cellQuantity}
           />
