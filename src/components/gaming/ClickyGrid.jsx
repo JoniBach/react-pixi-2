@@ -16,14 +16,13 @@ export const ClickyGrid = ({
   onSave,
   initialGame,
 }) => {
-  console.log(initialGame);
   const [newCells, setNewCells] = useState([]);
   const [activeTypeId, setActiveTypeId] = useState(options[0].id);
   const mouseActive = useMouseEvent();
   const templateBase = [...Array(quantity).keys()];
 
   const template = templateBase.map((e, i) =>
-    templateBase.map((ea, ia) => [i, ia])
+    templateBase.map((ea, ia) => [ia, i])
   );
 
   const handleRemove = (cell) => {
@@ -114,10 +113,11 @@ export const ClickyGrid = ({
     }
   }, []);
 
+
   return (
     <div>
       {template.map((row) => (
-        <div className="flex ">
+        <div className="flex">
           {row.map((cell) => (
             <ClickyCell
               handleClick={handleClick}

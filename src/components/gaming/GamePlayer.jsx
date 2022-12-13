@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { exportToJson } from "../../utils/exportToJson";
 import PerpetualCharacter from "../PerpetualCharacter";
 
-const options = {
-  backgroundColor: 0x353734,
+const stageOptions = {
+  backgroundColor: 0x222222,
 };
 
-export function GamePlayer({ size, initialEnvironment, cellQuantity, image }) {
+export function GamePlayer({ size,initialScorePoints, initialEnemySpawn,  initialConsumables, initialEnvironment, cellQuantity, image, options, data }) {
   const [newCells, setNewCells] = useState(initialEnvironment || []);
 
   // const [overlay, setoverlay] = useState(null);
@@ -21,13 +21,16 @@ export function GamePlayer({ size, initialEnvironment, cellQuantity, image }) {
   return (
     <>
       {newCells.length && (
-        <Stage width={size} height={size} options={options}>
+        <Stage width={size} height={size} options={stageOptions}>
           <PerpetualCharacter
             image={image}
             size={size}
             obstacleCells={newCells}
-            spawnCell={[0, 0]}
-            cellQuantity={cellQuantity}
+            scoreCells={initialScorePoints}
+            consumableCells={initialConsumables}
+            spawnCell={data.spawnData[0]}
+            enemySpawnCells={initialEnemySpawn}
+            cellQuantity={cellQuantity * 2}
           />
         </Stage>
       )}

@@ -3,7 +3,6 @@ import { useCallback, useEffect, useRef } from "react";
 
 const Thing = ({ onRender, scale, color, boundries, cellSize, gridSize }) => {
   const ref = useRef();
-
   const rect = useCallback((g) => {
     g.clear();
     g.beginFill(color, 1);
@@ -42,12 +41,11 @@ export const MapGrid = ({ onRender, scale = 1, color, invert, layout, size, grid
   const template = templateBase.map((e, i) =>
     templateBase.map((ea, ia) => handleStuff([i, ia]))
   );
-
   useEffect(() => {
     onRender(obs)
   }, [])
-  
 
+  // console.log(layout, template)
   return (
     <>
       {invert &&
