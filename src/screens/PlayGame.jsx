@@ -1,17 +1,17 @@
 import { Repeat } from "@styled-icons/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getGame } from "../api/game";
 import GameBuilder from "../components/gaming/GameBuilder";
 import GamePlayer from "../components/gaming/GamePlayer";
+import GamePlayer2 from "../components/gaming/v2/GamePlayer2";
 import { Button } from "../components/interface/Button";
-import { useGame } from "../hooks/useGame";
 import { options } from "../mockData/options";
 import { getSize } from "../utils/getSize";
 import { useQuery } from "../utils/useQuery";
 
 export const PlayGame = () => {
   const id = useQuery();
-  const { getGame, saveGame } = useGame();
   const [game, setGame] = useState({});
   const navigate = useNavigate();
 
@@ -45,12 +45,13 @@ export const PlayGame = () => {
     <div>
       {game.cellQuantity && (
         <>
-          <GamePlayer
+          <GamePlayer2
             size={getSize}
             initialEnvironment={game.environmentData}
             initialScorePoints={game.goalData}
             initialConsumables={game.consumableData}
             initialEnemySpawn={game.enemySpawnData}
+            initialPlayerSpawn={game.spawnData}
             cellQuantity={game.cellQuantity}
             options={options}
             data={game}

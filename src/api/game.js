@@ -1,7 +1,6 @@
 import axios from "axios";
 
-export const useGame = () => {
-  const createGame = async (gameData) => {
+const createGame = async (gameData) => {
     const { data } = await axios.post("/create", gameData);
     return data;
   };
@@ -26,5 +25,5 @@ export const useGame = () => {
     console.log(data);
     return data;
   };
-  return { createGame, getGames, getGame, saveGame };
-};
+
+  export { createGame, getGames, getGame, saveGame };

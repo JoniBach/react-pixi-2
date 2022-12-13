@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getGames } from "../api/game";
 import { List } from "../components/interface/List";
 import { Modal } from "../components/interface/Modal";
 import { useUser } from "../contexts/UserContext";
-import { useGame } from "../hooks/useGame";
 
 export const GameDash = () => {
-  const { getGames } = useGame();
   const { activeUser } = useUser();
   const [games, setGames] = useState([]);
   const [title, setTitle] = useState("loading games");

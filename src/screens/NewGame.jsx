@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createGame } from "../api/game";
 import { File } from "../components/interface/File";
 import { Input } from "../components/interface/Input";
 import { Wizard } from "../components/interface/Wizard";
 import { useUser } from "../contexts/UserContext";
-import { useGame } from "../hooks/useGame";
 export const NewGame = () => {
-  const { createGame } = useGame();
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [cells, setCells] = useState(20);

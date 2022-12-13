@@ -1,18 +1,17 @@
 import { Repeat } from "@styled-icons/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getGame, saveGame } from "../api/game";
 import GameBuilder from "../components/gaming/GameBuilder";
+import GameBuilder2 from "../components/gaming/v2/GameBuilder2";
 import { Button } from "../components/interface/Button";
-import { useGame } from "../hooks/useGame";
 import { getSize } from "../utils/getSize";
 import { useQuery } from "../utils/useQuery";
 
 export const EditGame = () => {
   const id = useQuery();
-  const { getGame, saveGame } = useGame();
   const [game, setGame] = useState({});
   const navigate = useNavigate();
-
 
   const handleFetch = async () => {
     const res = await getGame(id);
@@ -41,13 +40,12 @@ export const EditGame = () => {
   useEffect(() => {
     handleFetch(id);
   }, []);
-  console.log(game);
 
   return (
     <div>
       {game?.cellQuantity && (
         <>
-          <GameBuilder
+          <GameBuilder2
             size={getSize}
             initialEnvironment={game}
             onSave={handleSave}
