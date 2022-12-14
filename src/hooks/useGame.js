@@ -20,7 +20,7 @@ export const useGame = ({ maxGridSize, gridSize, scorePointScale }) => {
   });
 
   const { score, lives, time, updateScore, resetScore, looseLife, gainLife } =
-  useStats({ ...options });
+    useStats({ ...options });
 
   const {
     characterPosition,
@@ -47,8 +47,12 @@ export const useGame = ({ maxGridSize, gridSize, scorePointScale }) => {
     addScorePoint,
     removeScorePoint,
     updateScorePoints,
-  } = useScorePoint({ ...options, scorePointScale, characterBounds, updateScore });
-
+  } = useScorePoint({
+    ...options,
+    scorePointScale,
+    characterBounds,
+    updateScore,
+  });
 
   const { cpuPosition, cpuDirection, cpuRef, respawnCpu, loadCpu, updateCpu } =
     useCpu({
@@ -57,7 +61,7 @@ export const useGame = ({ maxGridSize, gridSize, scorePointScale }) => {
 
   useTick((delta) => {
     updateCharacter();
-    updateScorePoints()
+    updateScorePoints();
   });
 
   const game = {
