@@ -6,7 +6,7 @@ import { useObstacle } from "./useObstacle";
 import { useScorePoint } from "./useScorePoints";
 import { useStats } from "./useStats";
 
-export const useGame = ({ maxGridSize, gridSize }) => {
+export const useGame = ({ maxGridSize, gridSize, scorePointScale }) => {
   const cellSize = maxGridSize / gridSize;
   const pace = 1;
   const options = {
@@ -19,12 +19,14 @@ export const useGame = ({ maxGridSize, gridSize }) => {
     ...options,
   });
 
+  const { score, lives, time, updateScore, resetScore, looseLife, gainLife } =
+  useStats({ ...options });
 
   const {
     characterPosition,
     characterDirection,
     characterRef,
-    
+    characterBounds,
     respawnCharacter,
     loadCharacter,
     updateCharacter,
@@ -40,14 +42,13 @@ export const useGame = ({ maxGridSize, gridSize }) => {
 
   const {
     scorepointCells,
-    scorepointBoundries,
+    scorePointBoundries,
     loadScorePoints,
     addScorePoint,
     removeScorePoint,
-  } = useScorePoint({ ...options });
+    updateScorePoints,
+  } = useScorePoint({ ...options, scorePointScale, characterBounds, updateScore });
 
-  const { score, lives, time, updateScore, resetScore, looseLife, gainLife } =
-    useStats({ ...options });
 
   const { cpuPosition, cpuDirection, cpuRef, respawnCpu, loadCpu, updateCpu } =
     useCpu({
@@ -55,8 +56,8 @@ export const useGame = ({ maxGridSize, gridSize }) => {
     });
 
   useTick((delta) => {
-    // updateCpu()
     updateCharacter();
+    updateScorePoints()
   });
 
   const game = {
@@ -68,6 +69,7 @@ export const useGame = ({ maxGridSize, gridSize }) => {
     obstacleCells,
     characterPosition,
     cpuPosition,
+    score,
     loadConsumables,
     loadObstacles,
     loadCharacter,

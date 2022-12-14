@@ -137,7 +137,7 @@ export const useCharacter = ({
     characterPosition,
     characterDirection,
     characterRef,
-
+    characterBounds,
     // funcs
     respawnCharacter,
     loadCharacter,

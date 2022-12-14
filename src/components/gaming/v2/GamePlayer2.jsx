@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Sprite, Stage } from "@inlet/react-pixi";
+import { Sprite, Stage, Text } from "@inlet/react-pixi";
 import { useEffect } from "react";
 import { useGame } from "../../../hooks/useGame";
 import { GridItems } from "./GridItems";
@@ -17,7 +17,7 @@ const Content = ({
   data,
 }) => {
   const cellSize = size / cellQuantity;
-
+const scorePointScale = 0.2
   const {
     consumableCells,
     scorepointCells,
@@ -26,12 +26,13 @@ const Content = ({
     cpuPosition,
     characterRef,
     cpuRef,
+    score,
     loadConsumables,
     loadObstacles,
     loadCharacter,
     loadCpu,
     loadScorePoints,
-  } = useGame({ maxGridSize: size, gridSize: cellQuantity });
+  } = useGame({ maxGridSize: size, gridSize: cellQuantity, scorePointScale });
 
   useEffect(() => {
     loadConsumables(initialConsumables);
@@ -51,7 +52,7 @@ const Content = ({
       <GridItems
         cells={scorepointCells}
         cellSize={cellSize}
-        scale={0.2}
+        scale={scorePointScale}
         color={0xdea185}
       />
 
@@ -70,6 +71,20 @@ const Content = ({
         ref={cpuRef}
         {...cpuPosition}
       />
+                <Text
+            text={`Score: ${score} `}
+            x={0}
+            y={0}
+            style={{
+              fontSize: 20,
+              fontWeight: 400,
+              fill: "#01d27e", // gradient
+              dropShadow: true,
+              dropShadowBlur: 4,
+              dropShadowAngle: Math.PI / 6,
+              dropShadowDistance: 6,
+            }}
+          />
     </>
   );
 };
