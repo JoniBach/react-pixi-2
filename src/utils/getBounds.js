@@ -23,5 +23,5 @@ export const getBounds = ({ cell, cellSize, scale }) => {
 
   const size = cellSize * scale;
 
-  return { x, y, size, ...obstacleBoundries, center};
+  return { x, y, size, width: size, height: size, ...obstacleBoundries, center, cell};
 };

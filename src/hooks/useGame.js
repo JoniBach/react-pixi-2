@@ -1,3 +1,4 @@
+import { useTick } from "@inlet/react-pixi";
 import { useCharacter } from "./useCharacter";
 import { useConsumable } from "./useConsumable";
 import { useCpu } from "./useCpu";
@@ -7,6 +8,27 @@ import { useStats } from "./useStats";
 
 export const useGame = ({ maxGridSize, gridSize }) => {
   const cellSize = maxGridSize / gridSize;
+  const pace = 1;
+  const options = {
+    maxGridSize,
+    pace,
+    gridSize,
+  };
+
+  const { obstacleCells, obstacleBoundries, loadObstacles } = useObstacle({
+    ...options,
+  });
+
+
+  const {
+    characterPosition,
+    characterDirection,
+    characterRef,
+    
+    respawnCharacter,
+    loadCharacter,
+    updateCharacter,
+  } = useCharacter({ ...options, obstacleBoundries });
 
   const {
     consumableCells,
@@ -14,7 +36,7 @@ export const useGame = ({ maxGridSize, gridSize }) => {
     loadConsumables,
     addConsumable,
     removeConsumable,
-  } = useConsumable({ maxGridSize, gridSize });
+  } = useConsumable({ ...options });
 
   const {
     scorepointCells,
@@ -22,29 +44,25 @@ export const useGame = ({ maxGridSize, gridSize }) => {
     loadScorePoints,
     addScorePoint,
     removeScorePoint,
-  } = useScorePoint({ maxGridSize, gridSize });
+  } = useScorePoint({ ...options });
 
-  const {
-    characterPosition,
-    characterDirection,
-    characterRef,
-    respawnCharacter,
-    loadCharacter,
-  } = useCharacter({ maxGridSize, gridSize });
-  const { obstacleCells, obstacleBoundries, loadObstacles } = useObstacle({
-    maxGridSize,
-    gridSize,
-  });
   const { score, lives, time, updateScore, resetScore, looseLife, gainLife } =
-    useStats({ maxGridSize, gridSize });
+    useStats({ ...options });
 
-  const { cpuPosition, cpuDirection, cpuRef, respawnCpu, loadCpu } = useCpu({
-    maxGridSize,
-    gridSize,
+  const { cpuPosition, cpuDirection, cpuRef, respawnCpu, loadCpu, updateCpu } =
+    useCpu({
+      ...options,
+    });
+
+  useTick((delta) => {
+    // updateCpu()
+    updateCharacter();
   });
 
   const game = {
     cellSize,
+    characterRef,
+    cpuRef,
     consumableCells,
     scorepointCells,
     obstacleCells,

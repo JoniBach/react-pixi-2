@@ -18,9 +18,6 @@ const Thing = ({ scale, color, cellSize, cell }) => {
 };
 
 export const GridItems = ({ cells, cellSize, color, scale }) => {
-console.log({ cells, cellSize, color, scale })
-
-console.log(getBounds({cell: {x: 1, y: 1},cellSize, scale}))
   return (
     <>
       {cells.map((cell) => (

@@ -1,16 +1,12 @@
 import { useState } from "react";
+import { getBounds } from "../utils/getBounds";
 
 export const useObstacle = ({ maxGridSize, gridSize }) => {
   const cellSize = maxGridSize / gridSize;
 
   const [obstacleCells, setObstacleCells] = useState([]);
 
-  const obstacleBoundries = obstacleCells.map(({ x, y }) => ({
-    lt: x * cellSize,
-    rt: (x + cellSize) * cellSize,
-    lb: y * cellSize,
-    rb: (y + cellSize) * cellSize,
-  }));
+  const obstacleBoundries = obstacleCells.map((bounds) => getBounds({cell: bounds, cellSize, scale: 1}));
 
   const loadObstacles = (obstacleCells) => setObstacleCells(obstacleCells);
 

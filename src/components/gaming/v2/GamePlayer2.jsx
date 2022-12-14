@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Stage } from "@inlet/react-pixi";
+import { Sprite, Stage } from "@inlet/react-pixi";
 import { useEffect } from "react";
 import { useGame } from "../../../hooks/useGame";
 import { GridItems } from "./GridItems";
 
-export function GamePlayer2({
+const Content = ({
   size,
   initialPlayerSpawn,
   initialScorePoints,
@@ -15,7 +15,7 @@ export function GamePlayer2({
   image,
   options,
   data,
-}) {
+}) => {
   const cellSize = size / cellQuantity;
 
   const {
@@ -24,6 +24,8 @@ export function GamePlayer2({
     obstacleCells,
     characterPosition,
     cpuPosition,
+    characterRef,
+    cpuRef,
     loadConsumables,
     loadObstacles,
     loadCharacter,
@@ -38,48 +40,46 @@ export function GamePlayer2({
     loadCpu(initialEnemySpawn[0]);
     loadScorePoints(initialScorePoints);
   }, []);
-  console.log({
-    consumableCells,
-    scorepointCells,
-    obstacleCells,
-    characterPosition,
-    cpuPosition,
-  });
-
   return (
     <>
-      <Stage width={size} height={size}>
-        <GridItems
-          cells={obstacleCells}
-          cellSize={cellSize}
-          scale={1}
-          color={0x2121de}
-        />
-        <GridItems
-          cells={scorepointCells}
-          cellSize={cellSize}
-          scale={0.2}
-          color={0xdea185}
-        />
-      </Stage>
+      <GridItems
+        cells={obstacleCells}
+        cellSize={cellSize}
+        scale={1}
+        color={0x2121de}
+      />
+      <GridItems
+        cells={scorepointCells}
+        cellSize={cellSize}
+        scale={0.2}
+        color={0xdea185}
+      />
 
-      {/* {newCells.length && (
-        <Stage width={size} height={size} options={stageOptions}>
-          <PerpetualCharacter
-            image={image}
-            size={size}
-            obstacleCells={newCells}
-            scoreCells={initialScorePoints}
-            consumableCells={initialConsumables}
-            spawnCell={data.spawnData[0]}
-            enemySpawnCells={initialEnemySpawn}
-            cellQuantity={cellQuantity * 2}
-          />
-        </Stage>
-      )} */}
-      {/* {overlay && (
-          <Sprite alpha={1} image={overlay.name} width={size} height={size} />
-        )} */}
+      <Sprite
+        image={image}
+        width={cellSize}
+        height={cellSize}
+        ref={characterRef}
+        {...characterPosition}
+      />
+
+      <Sprite
+        image={image}
+        width={cellSize}
+        height={cellSize}
+        ref={cpuRef}
+        {...cpuPosition}
+      />
+    </>
+  );
+};
+
+export function GamePlayer2(props) {
+  return (
+    <>
+      <Stage width={props.size} height={props.size}>
+        <Content {...props} />
+      </Stage>
     </>
   );
 }
