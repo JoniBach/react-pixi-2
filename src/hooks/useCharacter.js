@@ -85,7 +85,7 @@ export const useCharacter = ({
     setCharacterPosition(startPos);
   };
 
-  const respawnCharacter = () => setCharacterPosition(characterSpawnCell);
+  const respawnCharacter = () => setCharacterPosition(getBounds({cell: characterSpawnCell, cellSize, scale: 1}));
 
   const movePlayer = () => {
     if (characterDirection === "up") {

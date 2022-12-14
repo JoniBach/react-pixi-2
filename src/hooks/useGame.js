@@ -33,6 +33,16 @@ export const useGame = ({ maxGridSize, gridSize, scorePointScale }) => {
   } = useCharacter({ ...options, obstacleBoundries });
 
   const {
+    cpuPosition,
+    cpuDirection,
+    cpuRef,
+    cpuBounds,
+    respawnCpu,
+    loadCpu,
+    updateCpu,
+  } = useCpu({ ...options, obstacleBoundries, characterBounds, looseLife, respawnCharacter });
+
+  const {
     consumableCells,
     consumableBoundries,
     loadConsumables,
@@ -54,14 +64,12 @@ export const useGame = ({ maxGridSize, gridSize, scorePointScale }) => {
     updateScore,
   });
 
-  const { cpuPosition, cpuDirection, cpuRef, respawnCpu, loadCpu, updateCpu } =
-    useCpu({
-      ...options,
-    });
+
 
   useTick((delta) => {
     updateCharacter();
     updateScorePoints();
+    updateCpu()
   });
 
   const game = {
